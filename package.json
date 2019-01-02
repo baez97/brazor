@@ -1,0 +1,38 @@
+{
+  "name": "brazor",
+  "version": "1.0.0",
+  "description": "Online strategy game in pure JavaScript and NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baez97/brazor.git"
+  },
+  "keywords": [
+    "online",
+    "JavaScript",
+    "NodeJS",
+    "strategy",
+    "CSS",
+    "HTML",
+    "Bootstrap"
+  ],
+  "author": "José Manuel Báez Soriano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baez97/brazor/issues"
+  },
+  "homepage": "https://github.com/baez97/brazor#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "jasmine-node": "^1.16.2",
+    "mongodb": "^3.1.10",
+    "request": "^2.88.0",
+    "sendgrid": "^1.9.2",
+    "socket.io": "^2.1.1",
+    "underscore": "^1.9.1"
+  }
+}

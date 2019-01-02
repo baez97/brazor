@@ -1,0 +1,172 @@
+@font-face { font-family: Birch; src: url(../fonts/BirchStd.otf); } 
+
+.selection-title {
+    background: url(../img/selection/back-swords.png) center center no-repeat transparent;
+    background-size: 100% 120%;
+    width: 280px;
+    height: 150px;
+    text-align: center;
+    font-family: Birch;
+    margin: auto;
+    padding-top: 50px;
+    color: white;
+}
+
+.selection-deck {
+    margin-top: 20px;
+    line-height: 21px;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+.selection-deck button {
+    border: none;
+    cursor: pointer;
+}
+
+.stats-deck {
+    display: block;
+    line-height: 21px;
+    box-sizing: border-box;
+    padding-right: 80px;
+}
+
+.stats-deck a{
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 1);
+}
+
+.stat-icon {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-origin: padding-box;
+    background-size: 100%;
+    box-sizing: border-box;
+    color: rgb(54, 39, 18);
+    cursor: auto;
+    display: inline-block;
+    margin-bottom: 5px;
+    position: relative;
+    text-decoration: none;
+    height: 110px;
+    width: 110px;
+    margin-top: -50px;
+    padding-top: 50px;
+    font-family: Birch;
+}
+
+.heart {
+    background-image: url(../img/selection/picto-health.png);
+}
+
+.power {
+    background-image: url(../img/selection/picto-war.png);
+    margin-right: 60px;
+}
+
+.icon {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-origin: padding-box;
+    background-size: 100%;
+    box-sizing: border-box;
+    color: rgb(54, 39, 18);
+    cursor: auto;
+    display: inline-block;
+    font-size: 15px;
+    height: 54px;
+    line-height: 21px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    margin-right: 3px;
+    position: relative;
+    text-decoration: none;
+    width: 54px;
+}
+
+.yopuka {
+    background-image: url(../img/icons/yopuka.png);
+}
+.feca {
+    background-image: url(../img/icons/feca.png);
+}
+.aniripsa {
+    background-image: url(../img/icons/aniripsa.png);
+}
+.sadida {
+    background-image: url(../img/icons/sadida.png);
+}
+.timador {
+    background-image: url(../img/icons/timador.png);
+}
+.sacrogito {
+    background-image: url(../img/icons/sacrogito.png);
+}
+.ocra {
+    background-image: url(../img/icons/ocra.png);
+}
+.osamodas {
+    background-image: url(../img/icons/osamodas.png);
+}
+
+.selection-image div {
+    display: inline-table;
+}
+
+.selection-description {
+    max-width: 400px;
+    text-align: justify;
+    background: url(../img/selection/bg-description.png) center center no-repeat transparent;
+    background-size: 100% 100%;
+    color: white;
+    padding: 100px 80px;
+    margin-top: -100px;
+} 
+
+.selection-description h3 {
+    font-family: Birch;
+    text-align: center;
+    font-size: 35px;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    background: url(../img/selection/background.jpg) center center no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+.play-button {
+    background: url(../img/btn-play1.png) center center no-repeat transparent;
+    font-family: Birch;
+    background-size: 95% auto;
+    width: 230px;
+    height: 111px;
+    font-size: 30px;
+    text-align: center;
+    justify-content: center;
+    padding-top: 12px;
+    color: #2f2f25;
+    line-height: 20px;
+    transition: all .1s;
+    font-weight: 700;
+    border: 0;
+}
+
+.play-button:hover {
+    background: url(../img/btn-play1-over.png) center center no-repeat transparent;
+    background-size: 100%;
+    font-size: 40px;
+    transition: all .1s;
+    line-height: 27px;
+}

@@ -1,0 +1,167 @@
+@font-face { font-family: Birch; src: url(../fonts/BirchStd.otf); } 
+
+#login-container { 
+    background: url(../img/login/bg-form.png) top center no-repeat transparent;
+    background-size: 100% 75%;
+    max-width: 625px;
+    min-height: 740px;
+    position: relative;
+    margin: auto;
+    padding: 100px 60px 80px;
+}
+
+#signin-container { 
+    background: url(../img/login/bg-form.png) top center no-repeat transparent;
+    background-size: 100% 85%;
+    max-width: 625px;
+    min-height: 740px;
+    position: relative;
+    margin: auto;
+    padding: 100px 60px 80px;
+}
+
+.login-title {
+    font-size: 50px;
+    font-family: Birch;
+    text-align: center;
+    line-height: 36px;
+    color: rgb(230, 230, 230);
+}
+
+.form-group {
+    margin-top: 30px;
+    padding: 0 60px;
+}
+
+.form-group label {
+    color: #b4b4b2;
+}
+
+.form-control {
+    background: #524d42;
+    border: 1px solid #908a85;
+    color: #f3f2ed;
+    box-shadow: 2px 2px 2px 0 #35312a inset;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 10px #908a85;
+    border: 1px solid #908a85;
+}
+
+.button-center {
+    width: 235px;
+    text-align: center;
+    margin: auto;
+}
+
+.green-link-container {
+    text-align: center;
+    margin: auto;
+}
+
+.green-link {
+    color: rgb(84, 196, 33);
+    transition: all .2s;
+    padding: 0 20px;
+}
+
+.green-link:hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(84, 196, 33);
+    text-shadow: 0 0 10px rgba(131, 233, 131, 1);
+}
+
+#content {
+    height: 95vh;
+    background: url(../img/sub-back.png) center center no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 48px;
+}
+
+.play-button {
+    background: url(../img/btn-play1.png) center center no-repeat transparent;
+    font-family: Birch;
+    background-size: 95% auto;
+    width: 230px;
+    height: 111px;
+    font-size: 30px;
+    text-align: center;
+    justify-content: center;
+    padding-top: 12px;
+    color: #2f2f25;
+    line-height: 20px;
+    transition: all .1s;
+    font-weight: 700;
+    border: 0;
+    margin-top: 5px;
+}
+
+.play-button:hover {
+    background: url(../img/btn-play1-over.png) center center no-repeat transparent;
+    background-size: 100%;
+    font-size: 40px;
+    transition: all .1s;
+    line-height: 27px;
+}
+
+.content-menu {
+    margin: 0 auto;
+    height: 65px;
+    position: relative;
+    font-family: Birch;
+    background: linear-gradient(to bottom, 
+        rgba(76,76,76,1) 0%,
+        rgba(89,89,89,1) 12%,
+        /* rgba(102,102,102,1) 25%, */
+        rgba(71,71,71,1) 39%,
+        rgba(44,44,44,1) 50%,
+        rgba(0,0,0,1) 51%,
+        rgba(17,17,17,1) 60%,
+        /* rgba(43,43,43,1) 76%, */
+        rgba(28,28,28,1) 91%,
+        rgba(19,19,19,1) 100%);
+}
+
+.menu-flex {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.menu-left {
+    flex: 2;
+    text-align: right;
+}
+
+.menu-right {
+    flex: 2;
+    text-align: left;
+}
+
+.content-menu a {
+    font-size: 25px;
+    color: rgb(240, 240, 240);
+    text-transform: uppercase;
+    padding: 3px 25px;
+    display: inline-block;
+    position: relative;
+    height: 74px;
+    line-height: 74px;
+    vertical-align: middle;
+    transition: all .1s;
+}
+
+.content-menu a:hover {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+    text-decoration: none;
+}
+
+#errorBox {
+    text-align: center;
+    color: red;
+}

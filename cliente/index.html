@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brazor</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="cliente/style.css">    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+	<script src="cliente/src/clienteCom.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
+	<script src="./src/modelo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+</head>
+
+<body>
+    <header class="masthead"></header>
+
+    <div style="display: block;">
+        <div class="content-menu menu-flex">
+            <div class="menu-left">
+                <a href="/">INICIO</a>
+                <a href="#">CARTAS</a>
+            </div>
+            <div class="menu-center">
+                <button class="play-button" onclick="location.href='/login'">JUGAR</button>
+            </div>
+            <div class="menu-right">
+                <a href="/signin">SIGNIN</a>
+                <a href="/login">LOGIN</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="intro">
+        </div>
+    </div>
+</body>
+</html>

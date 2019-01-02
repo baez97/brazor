@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brazor</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="cliente/styles/selection.css">    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+	<script src="cliente/src/clienteCom.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="cliente/src/webController.js"></script>
+    <script src="cliente/src/racesCodeData.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
+	<script src="./src/modelo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+</head>
+
+<body>
+    <script>
+        rest = new ClienteRest();
+        com  = new ClienteCom();
+    </script>
+    <div id="content">
+        <div class="selection-title">
+            <h1>Selección</h1>
+        </div>
+        <div class="selection-image">
+            <div class="selection-description">
+                <br>
+                <h3 id="title">El corazón de Yopuka</h3>
+                <p  id="description">
+                    ¡Los yopukas son unos intrépidos y temerarios 
+                    guerreros! Lo cierto es que los yopukas saben hacer 
+                    hablar a sus armas. De hecho, meterse en una pelea 
+                    al menos una vez al día es para ellos señal de buena 
+                    salud. Su impetuoso temperamento hace que sean unos 
+                    maravillosos paladinos.
+                </p>
+            </div>
+            <div style="padding-bottom: 40px;">
+                <img id="profile" style="height: 400px;" src = "cliente/img/profiles/yopuka.png">
+            </div>
+            <div class="stats-deck">
+                <a id="life"   class="stat-icon heart">100</a>
+                <a id="damage" class="stat-icon power">40</a>
+            </div>
+        </div>
+        <div class="selection-deck">
+            <button class="icon yopuka"    onClick="select('yopuka')"></button>
+            <button class="icon feca"      onClick="select('feca')"></button>
+            <button class="icon aniripsa"  onClick="select('aniripsa')"></button>
+            <button class="icon sadida"    onClick="select('sadida')"></button>
+            <button class="icon timador"   onClick="select('timador')"></button>
+            <button class="icon sacrogito" onClick="select('sacrogito')"></button>
+            <button class="icon ocra"      onClick="select('ocra')"></button>
+            <button class="icon osamodas"  onClick="select('osamodas')"></button>
+        </div>
+        <button class="play-button" onClick="confirmSelection()">Seleccionar</button>
+    </div>    
+</body>
+</html>
