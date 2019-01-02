@@ -89,3 +89,23 @@ var races = {
 }
 
 var selected = 'yopuka';
+
+var user = {
+    email: "baezsoriano97@hotmail.com",
+    password: "1234321",
+    name: "baez97",
+    experience: 50,
+    trophies: 120,
+    victories: 10,
+    fighters: {
+        sacrogito: {
+            damage: 40,
+            life: 200
+        },
+        yopuka: {
+            damage: 30,
+            life: 50
+        }
+    },
+    selected: 'yopuka'
+}

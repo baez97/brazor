@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brazor</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="cliente/styles/main.css">    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+	<script src="cliente/src/clienteCom.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="cliente/src/webController.js"></script>
+    <script src="cliente/src/racesCodeData.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
+	<script src="./src/modelo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+</head>
+
+<body>
+    <script>
+        rest = new ClienteRest();
+        com  = new ClienteCom();
+    </script>
+    <div id="content" class="container-fluid">
+        <div class="col-ms-12">
+            <div class="row main-title">
+                <h1>Menú principal</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id="stats-container" style="text-align: center">
+                <br>
+                <span style="text-align: left">Experiencia</span>
+                <div class="progress-box">
+                    <span></span>
+                </div>
+                <br>
+                <br>
+                <span style="text-align: left">Diplomas</span>
+                <br>
+                <div id="diplomas">11</div>
+            </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; padding-left: 20px">
+            <div id="#profile-container" style="padding-bottom: 40px;">
+                <img id="profile" style="height: 400px;" src="cliente/img/profiles/yopuka.png">
+            </div>
+            <div class="fighters-deck">
+                <button class="icon yopuka"    onClick="select('yopuka')"></button>
+                <button class="icon feca"      onClick="select('feca')"></button>
+                <button class="icon aniripsa"  onClick="select('aniripsa')"></button>
+                <button class="icon sadida"    onClick="select('sadida')"></button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="friends-list-container">
+                <h3>Amigos</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>En línea</th>
+                            <th>Nombre</th>
+                            <th>Diplomas</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>SI</td>
+                        <td>Mark</td>
+                        <td>27</td>
+                    </tr>
+                    <tr>
+                        <td>NO</td>
+                        <td>Antonio</td>
+                        <td>32</td>
+                    </tr>
+                    <tr>
+                        <td>NO</td>
+                        <td>Larry</td>
+                        <td>123</td>
+                    </tr>
+                    <tr>
+                        <td>NO</td>
+                        <td>Jonson</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>NO</td>
+                        <td>José</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>NO</td>
+                        <td>Fran</td>
+                        <td>43</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="text-align: center">
+            
+        </div>
+            
+    </div>    
+</body>
+</html>

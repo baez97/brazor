@@ -38,6 +38,12 @@ app.get('/selection', function(request, response) {
     response.send(contenido);
 })
 
+app.get('/main', function(request, response) {
+    var contenido = fs.readFileSync("./cliente/views/main.html");
+    response.setHeader("Content-type", "text/html");
+    response.send(contenido);
+})
+
 app.get('/', function(request, response) {
 	var contenido=fs.readFileSync("./cliente/index.html"); 
 	response.setHeader("Content-type","text/html");
