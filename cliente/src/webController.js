@@ -37,6 +37,8 @@ function isEmail(email) {
 }
 
 function select(nameOfRace) {
+    $(".error-box").empty();
+
     var { title, description, damage, life } = races[nameOfRace];
 
     selected = nameOfRace;
@@ -50,4 +52,9 @@ function select(nameOfRace) {
 
 function confirmSelection() {
     alert(selected);
+}
+
+function selectLocked() {
+    $(".error-box").empty();
+    $(".error-box").append("<h1>Luchador bloqueado</h1>");
 }

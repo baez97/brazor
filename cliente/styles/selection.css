@@ -16,7 +16,7 @@
     margin-top: 20px;
     line-height: 21px;
     box-sizing: border-box;
-    margin: auto;
+    margin: 0 -200px;
 }
 
 .selection-deck button {
@@ -28,10 +28,11 @@
     display: block;
     line-height: 21px;
     box-sizing: border-box;
-    padding-right: 80px;
+    text-align: left;
+    margin-left: -40px;
 }
 
-.stats-deck a{
+.stats-deck span{
     color: white;
     font-size: 30px;
     font-weight: 700;
@@ -53,9 +54,10 @@
     text-decoration: none;
     height: 110px;
     width: 110px;
-    margin-top: -50px;
     padding-top: 50px;
+    margin-top: 100px;
     font-family: Birch;
+    text-align: center;
 }
 
 .heart {
@@ -64,7 +66,6 @@
 
 .power {
     background-image: url(../img/selection/picto-war.png);
-    margin-right: 60px;
 }
 
 .icon {
@@ -86,6 +87,8 @@
     position: relative;
     text-decoration: none;
     width: 54px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px black;
 }
 
 .yopuka {
@@ -124,7 +127,8 @@
     background-size: 100% 100%;
     color: white;
     padding: 100px 80px;
-    margin-top: -100px;
+    margin-top: -50px;
+    float: right;
 } 
 
 .selection-description h3 {
@@ -138,12 +142,13 @@ html, body {
     height: 100%;
 }
 
-body {
+.container-fluid {
     background: url(../img/selection/background.jpg) center center no-repeat;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     text-align: center;
+    height: 100%;
 }
 
 .play-button {

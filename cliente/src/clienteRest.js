@@ -41,22 +41,25 @@ function ClienteRest() {
         });
     }
 
-    this.loginUsuario = function (email, password) {        
+    this.loginUsuario = function (email, password) { 
+        console.log("REST");       
         $.ajax({
             type: 'POST',
             url: '/loginUsuario/',
             data: JSON.stringify({email: email, password: password}),
             success: function(data) {
-                if ( !data.email ) {
+                if ( data == undefined ) {
                     showError("No se ha podido iniciar sesión");
                     console.log("No se ha podido iniciar sesión");
                 } else {
-                    console.log("Bienvenido");
-                    com.ini(data._id);
-                    //$.cookie("usr", JSON.stringify(data));
-                    location.href = '/';
+                    com.ini(data);
+                    localStorage.setItem("user", JSON.stringify(data));
+                    location.href = '/main';
                     //mostrarCrearPartida();
                 }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                showError(errorThrown);
             },
             contentType: 'application/json',
             dataType: 'json'
@@ -69,6 +72,7 @@ function ClienteRest() {
             url: '/registrarUsuario/',
             data: JSON.stringify({ nombre: nombre, email: email, clave: clave }),
             success: function (data) {
+                console.log("REACHED!");
                 if (!data.email) {
                     showError("No se ha podido registrar");
                     console.log("No se ha podido registrar");

@@ -10,7 +10,7 @@ html, body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100%;
+    min-height: 100%;
 }
 
 .main-title {
@@ -120,12 +120,10 @@ html, body {
 .progress-box > span {
     display: block;
     height: 100%;
-    width: 40%;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    /* background-color: rgb(100, 160, 248); */
     background: rgb(157,213,58); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(157,213,58,1) 0%, rgba(161,213,79,1) 50%, rgba(128,194,23,1) 51%, rgba(124,188,10,1) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, rgba(157,213,58,1) 0%,rgba(161,213,79,1) 50%,rgba(128,194,23,1) 51%,rgba(124,188,10,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -141,6 +139,7 @@ html, body {
 #profile {
     margin: auto;
 }
+
 
 .table>tbody>tr>td, .table>tbody>tr>th{
     border-top: 0px;
@@ -208,4 +207,59 @@ tr:nth-child(even) {
 }
 .osamodas {
     background-image: url(../img/icons/osamodas.png);
+}
+.locked {
+    background-image: url(../img/icons/locked.png);
+    box-shadow: inset 0 5px 5px rgb(0, 0, 0, 0.8);
+}
+
+.error-box {
+    text-align: center;
+    color: red;
+    text-shadow: 0 3px 8px black;
+    font-family: Birch;
+}
+
+.stats-deck {
+    display: block;
+    line-height: 21px;
+    box-sizing: border-box;
+    margin: auto;
+    margin-bottom: -30px;
+}
+
+.stats-deck span{
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 1);
+}
+
+.stat-icon {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-origin: padding-box;
+    background-size: 100%;
+    box-sizing: border-box;
+    color: rgb(54, 39, 18);
+    cursor: auto;
+    display: inline-block;
+    margin-bottom: 5px;
+    position: relative;
+    text-decoration: none;
+    height: 110px;
+    width: 110px;
+    padding-top: 50px;
+    margin-top: 0px;
+    font-family: Birch;
+    text-align: center;
+}
+
+.heart {
+    background-image: url(../img/selection/picto-health.png);
+}
+
+.power {
+    background-image: url(../img/selection/picto-war.png);
 }

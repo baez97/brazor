@@ -6,19 +6,28 @@ var bodyParser = require('body-parser');
 var exp     = require("express");
 var app     = exp(); 
 var server  = require('http').Server(app);
-// var io      = require('socket.io').listen(server);
-// var modelo  = require("./servidor/modelo.js");
-// var comSrv  = require("./servidor/comSrv.js");
-// var com     = new comSrv.ComSrv();
 
-// var juego=new modelo.Juego();
+var io      = require('socket.io').listen(server);
+var model  = require("./server/model.js");
+var comSrv  = require("./server/comSrv.js");
+var com     = new comSrv.ComSrv();
+
+var juego = new model.Juego(13);
 
 app.set('port', (process.env.PORT || 5000));
 app.use(exp.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// REFACTORED ROUTES
+
+// --------------------------------------------------------------------
+// ---------------------------- ROUTING -------------------------------
+// --------------------------------------------------------------------
+app.get('/', function(request, response) {
+	var contenido=fs.readFileSync("./cliente/index.html"); 
+	response.setHeader("Content-type","text/html");
+	response.send(contenido); 
+});
 
 app.get('/login', function(request, response) {
     var contenido = fs.readFileSync("./cliente/views/login.html");
@@ -43,11 +52,19 @@ app.get('/main', function(request, response) {
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 })
+// --------------------------------------------------------------------
 
-app.get('/', function(request, response) {
-	var contenido=fs.readFileSync("./cliente/index.html"); 
-	response.setHeader("Content-type","text/html");
-	response.send(contenido); 
+
+// --------------------------------------------------------------------
+// ------------------------- API REST ROUTES --------------------------
+// --------------------------------------------------------------------
+app.post("/loginUsuario/", function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password ? req.body.password : "";
+
+    juego.loginUser(email, password, function(data) {
+        res.send(data);
+    });
 });
 
 // app.post("/registrarUsuario/", function(req, res) {
@@ -93,7 +110,7 @@ app.get('/', function(request, response) {
 
 // app.get("/agregarUsuario/:nombre",function(request,response) {
 // 	// const nombre = request.params.nombre;
-// 	// var usr     = new modelo.Usuario(nombre);
+// 	// var usr     = new model.Usuario(nombre);
 // 	// juego.agregarUsuario(usr);
 //     // DEPRECATED!
     
@@ -216,15 +233,6 @@ app.get('/', function(request, response) {
 // 	response.send({res: "Turno pasado"});
 // });
 
-// app.post("/loginUsuario/", function(req, res) {
-//     var email = req.body.email;
-//     var clave = req.body.password ? req.body.password : "";
-
-//     juego.loginUsuario(email, clave, function(data) {
-//         res.send(data);
-//     });
-// });
-
 // app.delete("/eliminarUsuario/:uid",function(request,response){
 //     var uid=request.params.uid;
 //     juego.eliminarUsuario(uid,function(result){
@@ -237,4 +245,4 @@ server.listen(app.get('port'), function () {
 	console.log('Node app is running on port', app.get('port'));
 });
 
-// com.lanzarSocketSrv(io,juego);
+com.lanzarSocketSrv(io,juego);
