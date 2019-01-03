@@ -49,11 +49,11 @@ function Dao() {
     // ---------------------------- CREATE --------------------------------
     // --------------------------------------------------------------------
     this.insertUser = function ( user, callback ) {
-        insert(this.users, usu, callback);
+        this.insert(this.users, user, callback);
     }
 
     this.insert = function ( collection, element, callback ) {
-        colection.insertOne(element, function(err, result) {
+        collection.insertOne(element, function(err, result) {
             if ( err ) {
                 callback(undefined);
             } else {
@@ -69,8 +69,8 @@ function Dao() {
         this.edit(this.users, user, callback);
     }
 
-    this.edit = function(colection, data, callback) {
-        colection.findAndModify({ _id: ObjectId(data._id)}, {}, data, {}, function( err, result ) {
+    this.edit = function(collection, data, callback) {
+        collection.findAndModify({ _id: ObjectId(data._id)}, {}, data, {}, function( err, result ) {
             if ( err ) {
                 callback(undefined);
             } else {
@@ -86,8 +86,8 @@ function Dao() {
         delete(this.users, { _id: ObjectId(uid) }, callback);
     }
 
-    this.delete = function(colection, filter, callback) {
-        colection.remove(filter, function (err, result) {
+    this.delete = function(collection, filter, callback) {
+        collection.remove(filter, function (err, result) {
             if ( err ) {
                 callback(undefined);
             } else {

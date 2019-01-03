@@ -17,6 +17,16 @@ class Juego {
             callback(user);
         });
     }
+
+    registerUser(user, callback) {
+        var cryptedPassword = cf.encrypt(user.password);
+
+        user.password = cryptedPassword;
+
+        this.dao.insertUser(user, function(result) {
+            callback(result);
+        })
+    }
 }
 
 module.exports.Juego = Juego;

@@ -58,11 +58,18 @@ app.get('/main', function(request, response) {
 // --------------------------------------------------------------------
 // ------------------------- API REST ROUTES --------------------------
 // --------------------------------------------------------------------
-app.post("/loginUsuario/", function(req, res) {
+app.post("/loginUser/", function(req, res) {
     var email = req.body.email;
     var password = req.body.password ? req.body.password : "";
 
     juego.loginUser(email, password, function(data) {
+        res.send(data);
+    });
+});
+
+app.post("/registerUser", function(req, res) {
+    var user = req.body;
+    juego.registerUser(user, function(data) {
         res.send(data);
     });
 });

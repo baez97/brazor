@@ -24,6 +24,10 @@
     <script>
         rest = new ClienteRest();
         com  = new ClienteCom();
+
+        if ( localStorage.user ) {
+            location.href="/main";
+        }
     </script>
 
     <div style="display: block;">

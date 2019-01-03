@@ -83,7 +83,7 @@ var races = {
             heridas, suelen estar en primera línea, ¡preparados para el 
             combate! El sacrógrito es el compañero ideal para pasar tus 
             largas noches luchando...`,
-        damage: '5-100',
+        damage: 10,
         life: 200
     }
 }

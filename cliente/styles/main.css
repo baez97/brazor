@@ -11,6 +11,7 @@ html, body {
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100%;
+    padding: 0 40px;
 }
 
 .main-title {
@@ -43,7 +44,7 @@ html, body {
 }
 
 #stats-container {
-    margin-left: 25px;
+    margin: auto;
     margin-top: -20px;
     max-width: 450px;
     text-align: justify;
@@ -61,6 +62,7 @@ html, body {
     padding: 60px 60px 80px;
     max-width: 625px;
     min-height: 500px;
+    margin:auto;
 }
 
 .friends-list-container h3 {

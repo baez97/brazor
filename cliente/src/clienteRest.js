@@ -1,5 +1,48 @@
 function ClienteRest() {
     var cli = this;
+
+    this.loginUser = function (email, password) { 
+        console.log("REST");       
+        $.ajax({
+            type: 'POST',
+            url: '/loginUser/',
+            data: JSON.stringify({email: email, password: password}),
+            success: function(data) {
+                if ( data == undefined ) {
+                    showError("No se ha podido iniciar sesión");
+                    console.log("No se ha podido iniciar sesión");
+                } else {
+                    com.ini(data);
+                    localStorage.setItem("user", JSON.stringify(data));
+                    location.href = '/main';
+                    //mostrarCrearPartida();
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                showError(errorThrown);
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        })
+    },
+
+    this.registerUser = function (user) {
+        $.ajax({
+            type: 'POST',
+            url: '/registerUser/',
+            data: JSON.stringify(user),
+            success: function (data) {
+                cli.loginUser(data.email, data.password);
+            },
+            error: function(error) {
+                showError("No se ha podido registrar");
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    }
+
+
     this.obtenerPartidas = function () {
         $.getJSON("/obtenerPartidas", function (data) {
             console.log(data);
@@ -41,30 +84,7 @@ function ClienteRest() {
         });
     }
 
-    this.loginUsuario = function (email, password) { 
-        console.log("REST");       
-        $.ajax({
-            type: 'POST',
-            url: '/loginUsuario/',
-            data: JSON.stringify({email: email, password: password}),
-            success: function(data) {
-                if ( data == undefined ) {
-                    showError("No se ha podido iniciar sesión");
-                    console.log("No se ha podido iniciar sesión");
-                } else {
-                    com.ini(data);
-                    localStorage.setItem("user", JSON.stringify(data));
-                    location.href = '/main';
-                    //mostrarCrearPartida();
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                showError(errorThrown);
-            },
-            contentType: 'application/json',
-            dataType: 'json'
-        })
-    }
+    
 
     this.registrarUsuario = function (nombre, email, clave) {
         $.ajax({
@@ -72,7 +92,6 @@ function ClienteRest() {
             url: '/registrarUsuario/',
             data: JSON.stringify({ nombre: nombre, email: email, clave: clave }),
             success: function (data) {
-                console.log("REACHED!");
                 if (!data.email) {
                     showError("No se ha podido registrar");
                     console.log("No se ha podido registrar");
@@ -85,6 +104,8 @@ function ClienteRest() {
             dataType: 'json'
         });
     }
+
+    
 
     this.eliminarUsuario = function () {
         var usr = JSON.parse($.cookie("usr"));
