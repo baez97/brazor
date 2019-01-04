@@ -10,10 +10,22 @@ class Juego {
     }
 
     loginUser(email, password, callback) {
+        var self = this;
+        console.log("HOLA " + email + " + " + password);
         var cryptedPassword = cf.encrypt(password);
 
         let filter = { email: email, password: cryptedPassword }
-        this.dao.findUser(filter, function(user) {
+        self.dao.loginUser(filter, function(user) {
+            if ( user == null ) {
+                self.dao.findUser(filter, callback);
+            } else {
+                callback(user);
+            }
+        });
+    }
+
+    logoutUser(email, callback) {
+        this.dao.logoutUser({email: email}, function(user) {
             callback(user);
         });
     }
@@ -26,6 +38,68 @@ class Juego {
         this.dao.insertUser(user, function(result) {
             callback(result);
         })
+    }
+
+    addFriendByEmail(user, email, callback) {
+        var self = this;
+        this.dao.findUser({email: email}, function(newFriend) {
+            if ( newFriend ) {
+                console.log("Model has found " + newFriend.name)
+                self.addFriends(user, newFriend, callback)
+            } else {
+                console.log("Model couldn't find " + email);
+                callback(undefined);
+            }
+        })
+    }
+
+    addFriends(user1, user2, callback) {
+        var self = this;
+
+        self.dao.addFriend(user1, user2.email, function(result) {
+            if ( result ) {
+                console.log(`${user1.name} was correctly updated`);
+                console.log(result);
+                self.dao.addFriend(user2, user1.email, callback);
+            } else {
+                console.log(`${user2.name} was NOT correctly updated`);
+                callback(result);
+            }
+        })
+    }
+
+    getFriends(data, callback) {
+        var collection = [];
+        var promises = [];
+        var friend;
+        var self = this;
+
+        data.friends.forEach( (email) => {
+            promises.push( new Promise ((resolve, reject) => {
+                self.dao.findUser({email: email}, function(result) {
+                    if ( result ) {
+                        friend = {
+                            email: email,
+                            name: result.name,
+                            diplomas: result.diplomas
+                        }
+                        collection.push(friend);
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                })
+            }));
+        })
+
+        Promise.all(promises)
+            .then( () => {
+                callback(collection);
+            })
+            .catch( (err) => {
+                console.log(err);
+                callback(undefined);
+            });
     }
 }
 

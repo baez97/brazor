@@ -60,7 +60,10 @@ app.get('/main', function(request, response) {
 // --------------------------------------------------------------------
 app.post("/loginUser/", function(req, res) {
     var email = req.body.email;
-    var password = req.body.password ? req.body.password : "";
+    // var password = req.body.password ? req.body.password : "";
+    var password = req.body.password;
+    
+    console.log(req.body);
 
     juego.loginUser(email, password, function(data) {
         res.send(data);
@@ -74,6 +77,25 @@ app.post("/registerUser", function(req, res) {
     });
 });
 
+app.post("/addFriendByEmail", function(req, res) {
+    var { user, email } = req.body;
+    juego.addFriendByEmail(user, email, function(data) {
+        res.send(data);
+    });
+});
+
+app.post("/getFriends", function(req, res) {
+    juego.getFriends(req.body, function(data) {
+        res.send(data);
+    });
+});
+
+app.put("/logoutUser", function(req, res) {
+    juego.logoutUser(req.body.email, function(data) {
+        res.send(data);
+    });
+
+})
 // app.post("/registrarUsuario/", function(req, res) {
 //     var nombre = req.body.nombre;
 //     var email  = req.body.email;

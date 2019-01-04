@@ -74,6 +74,7 @@
     background-color: rgba(0, 0, 0, 0);
     background-origin: padding-box;
     background-size: 100%;
+    background-position: center;
     box-sizing: border-box;
     color: rgb(54, 39, 18);
     cursor: auto;
@@ -93,7 +94,7 @@
 }
 
 .icon:hover {
-    background-size: 110%;
+    background-size: 115%;
     box-shadow: 0 5px 10px black;
 }
 

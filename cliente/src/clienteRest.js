@@ -1,7 +1,7 @@
 function ClienteRest() {
     var cli = this;
 
-    this.loginUser = function (email, password, errorHandler) { 
+    this.loginUser = function (email, password, errorHandler) {
         $.ajax({
             type: 'POST',
             url: '/loginUser/',
@@ -10,7 +10,9 @@ function ClienteRest() {
                 if ( data == undefined ) {
                     errorHandler("No se ha podido iniciar sesión");
                 } else {
+                    console.log("Hemos triunfao");
                     com.ini(data);
+                    data.password = password;
                     localStorage.setItem("user", JSON.stringify(data));
                     location.href = '/main';
                     //mostrarCrearPartida();
@@ -24,6 +26,22 @@ function ClienteRest() {
         })
     },
 
+    this.logoutUser = function (email, callback) {
+        $.ajax({
+            type: 'PUT',
+            url: '/logoutUser',
+            data: JSON.stringify({email: email}),
+            success: function(data) {
+                callback();
+            },
+            error: function(err) {
+                callback();
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        })
+    }
+
     this.registerUser = function (user, errorHandler) {
         $.ajax({
             type: 'POST',
@@ -35,6 +53,38 @@ function ClienteRest() {
             },
             error: function(error) {
                 errorHandler("No se ha podido registrar");
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    }
+
+    this.addFriendByEmail = function (user, email, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/addFriendByEmail/',
+            data: JSON.stringify({ user: user, email: email }),
+            success: function(data) {
+                callback(true);
+            },
+            error: function(error) {
+                callback(false);
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    }
+
+    this.getFriends = function (friends, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/getFriends',
+            data: JSON.stringify({friends: friends}),
+            success: function(data) {
+                callback(data);
+            },
+            error: function(error) {
+                callback(false);
             },
             contentType: 'application/json',
             dataType: 'json'

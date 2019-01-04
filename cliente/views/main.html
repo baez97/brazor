@@ -13,6 +13,8 @@
 	<script src="cliente/src/clienteCom.js"></script>
     <script src="cliente/src/clienteRest.js"></script>
     <script src="cliente/src/controllers/mainController.js"></script>    
+    <script src="cliente/src/controllers/loginController.js"></script>    
+    <script src="cliente/src/controllers/errorController.js"></script>    
     <script src="cliente/src/racesCodeData.js"></script>
 </head>
 
@@ -20,23 +22,39 @@
     <script>
         rest = new ClienteRest();
         com  = new ClienteCom();
+        
         if ( !localStorage.user ) {
             location.href="/";
-        }
+        }  // else {
+        //     var localUsr = JSON.parse(localStorage.user);
+        //     if ( !localUsr.online ) {
+        //         console.log("Hola! veo que ya has estado por aquí...");
+        //         var email = localUsr.email;
+        //         var password = localUsr.password;
+        //         rest.loginUser(email, password, showError);
+        //     }
+        // }
 
         if ( localStorage.firstTime ) {
             showAlert("¡Bienvenido a Brazor! Añade a tus amigos para desafiarles");
             localStorage.removeItem("firstTime");
         }
     </script>
+    <div id="add-friend-container" class="hidden">
+        <h1>Agregar amigo</h1>
+        <div class="form-group">
+            <label class="control-label">Nombre o email</label>
+            <input class="form-control" id="textFriend" placeholder="Nombre o email" type="text">
+        </div>
+        <div class="button-center">
+            <button class="play-button" onclick="addFriend()">Aceptar</button>
+        </div>
+    </div>
     <div id="alert-container" class="hidden">
         <h1 class="alert-title"></h1>
         <button class="play-button" onclick="hideAlert()">Aceptar</button>
     </div>
-    <did id="add-friend-dialog alert-container">
-        <h1>Hola!</h1>
-    </did>
-    <div id="alert-background" class="container-fluid hidden"></div>
+    <div id="alert-background" class="container-fluid hidden" onclick="hideAlert()"></div>
     <div id="content" class="container-fluid" style="position: absolute; top: 0;">
         <div class="col-md-12">
             <div class="row main-title">
@@ -70,50 +88,14 @@
             </div>
             <div class="fighters-deck">
             </div>
-            <div class="error-box"></div>
+            <div id="errorBox"></div>
         </div>
         <div class="col-md-4">
             <div class="friends-list-container">
                 <h3>Amigos</h3>
-                <button class="add-friend-button">+</button>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>En línea</th>
-                            <th>Nombre</th>
-                            <th>Diplomas</th>
-                        </tr>
-                    </thead>
-                    <tr>
-                        <td>SI</td>
-                        <td>Mark</td>
-                        <td>27</td>
-                    </tr>
-                    <tr>
-                        <td>NO</td>
-                        <td>Antonio</td>
-                        <td>32</td>
-                    </tr>
-                    <tr>
-                        <td>NO</td>
-                        <td>Larry</td>
-                        <td>123</td>
-                    </tr>
-                    <tr>
-                        <td>NO</td>
-                        <td>Jonson</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>NO</td>
-                        <td>José</td>
-                        <td>23</td>
-                    </tr>
-                    <tr>
-                        <td>NO</td>
-                        <td>Fran</td>
-                        <td>43</td>
-                    </tr>
+                <button class="add-friend-button" onclick="showAddFriend()">+</button>
+                <table class="table" id="friends-table">
+                    
                 </table>
             </div>
         </div>

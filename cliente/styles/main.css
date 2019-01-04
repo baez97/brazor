@@ -2,7 +2,7 @@
 
 html, body {
     margin: 0;
-    height: 100%;
+    min-height: 100%;
 }
 
 .container-fluid {
@@ -11,6 +11,7 @@ html, body {
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100%;
+    min-width: 100%;
     padding: 0 40px;
 }
 
@@ -168,6 +169,7 @@ tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0);
     background-origin: padding-box;
     background-size: 100%;
+    background-position: center;
     box-sizing: border-box;
     color: rgb(54, 39, 18);
     cursor: auto;
@@ -187,7 +189,7 @@ tr:nth-child(even) {
 }
 
 .icon:hover {
-    background-size: 110%;
+    background-size: 115%;
     box-shadow: 0 5px 10px black;
 }
 
@@ -222,11 +224,13 @@ tr:nth-child(even) {
     box-shadow: inset 0 5px 5px rgb(0, 0, 0, 0.8);
 }
 
-.error-box {
+#errorBox {
     text-align: center;
     color: red;
     text-shadow: 0 3px 8px black;
     font-family: Birch;
+    position: relative;
+    z-index: 10;
 }
 
 .stats-deck {
@@ -304,7 +308,7 @@ tr:nth-child(even) {
     position: absolute;
     top: 0;
     background: black;
-    min-height: 100%;
+    height: 100%;
     min-width: 100%;
     z-index: 1;
     opacity: 0.8;
@@ -396,4 +400,53 @@ tr:nth-child(even) {
     font-size: 40px;
     transition: all .1s;
     color: white;
+}
+
+#add-friend-container{
+    max-width: 600px;
+    min-width: 600px;
+    min-height: 500px;
+    background: url(../img/selection/bg-description.png) center center no-repeat transparent;
+    background-size: 100% 100%;
+    color: white;
+    padding: 160px 80px;
+    padding-bottom: 110px;
+    z-index: 2;
+    position: relative;
+    margin: auto;
+    margin-top: 150px;
+    max-width: 400px;
+}
+
+#add-friend-container h1 {
+    font-family: Birch;
+    text-align: center;
+}
+
+.form-group {
+    margin-top: 30px;
+    padding: 0 60px;
+}
+
+.form-group label {
+    text-align: left;
+    color: #b4b4b2;
+}
+
+.form-control {
+    background: #524d42;
+    border: 1px solid #908a85;
+    color: #f3f2ed;
+    box-shadow: 2px 2px 2px 0 #35312a inset;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 10px #908a85;
+    border: 1px solid #908a85;
+}
+
+.button-center {
+    width: 235px;
+    text-align: center;
+    margin: auto;
 }

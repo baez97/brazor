@@ -36,7 +36,10 @@ function Dao() {
     }
 
     this.findDocument = function ( collection, filter, callback ) {
+        console.log("HOLA! has llamado a find user con el filtro ");
+        console.log(filter);
         collection.find(filter).toArray(function(error, result) {
+            console.log(result);
             if ( error || result.length == 0 ) {
                 callback(undefined);
             } else {
@@ -69,8 +72,43 @@ function Dao() {
         this.edit(this.users, user, callback);
     }
 
+    this.loginUser = function ( filter, callback ) {
+        this.users.findOneAndUpdate(filter, {$set: {online: true}}, {returnOriginal: true}, function( err, result ) {
+            if ( err || result.length == 0 ) {
+                callback(undefined);
+            } else {
+                console.log(result);
+                callback(result.value);
+            }
+        })
+
+        this.users.findAndModify
+    }
+
+    this.logoutUser = function ( filter, callback ) {
+        this.users.findOneAndUpdate(filter, {$set: {online: false}}, function( err, result ) {
+            console.log(result);
+            if ( err || result.length == 0 ) {
+                callback(undefined);
+            } else {
+                callback(result.value);
+            }
+        })
+    }
+
+    this.addFriend = function(user, email, callback) {
+        this.users.findOneAndUpdate({_id: ObjectId(user._id)}, {$push: {friends: email}}, function( err, result ) {
+            if ( err ) {
+                console.log(err);
+                callback(undefined);
+            } else {
+                callback(result);
+            }
+        })
+    }
+
     this.edit = function(collection, data, callback) {
-        collection.findAndModify({ _id: ObjectId(data._id)}, {}, data, {}, function( err, result ) {
+        collection.findOneAndReplace({ _id: ObjectId(data._id)}, data, {}, function( err, result ) {
             if ( err ) {
                 callback(undefined);
             } else {

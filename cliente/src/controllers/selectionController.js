@@ -25,7 +25,8 @@ function confirmSelection() {
     user.diplomas = 0;
     user.experience = 0;
     user.selected = selected;
-    user.fighters = []
+    user.fighters = [];
+    user.friends = [];
     var firstFighter = races[selected];
     user.fighters.push({
         name: selected,
