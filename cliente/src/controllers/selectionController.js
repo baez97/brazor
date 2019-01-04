@@ -34,5 +34,5 @@ function confirmSelection() {
     })
 
     localStorage.removeItem("user-to-sign");
-    rest.registerUser(user);
+    rest.registerUser(user, showError);
 }

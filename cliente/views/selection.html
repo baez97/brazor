@@ -15,6 +15,7 @@
     <script src="cliente/src/clienteRest.js"></script>
     <script src="cliente/src/racesCodeData.js"></script>
     <script src="cliente/src/controllers/selectionController.js"></script>
+    <script src="cliente/src/controllers/errorController.js"></script>
 </head>
 
 <body>
@@ -29,7 +30,7 @@
     <div id="content" class="container-fluid">
         <div class="col-md-12">
             <div class="row selection-title">
-                <h1>Selección</h1>
+                <h1>Elige tu primer luchador</h1>
             </div>
         </div>
 
@@ -63,6 +64,7 @@
                 <button class="icon osamodas"  onClick="select('osamodas')"></button>
             </div>
             <button class="play-button" onClick="confirmSelection()">Seleccionar</button>
+            <div id="errorBox"></div>
         </div>
             
         <div class="col-md-4">

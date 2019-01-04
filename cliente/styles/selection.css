@@ -3,12 +3,12 @@
 .selection-title {
     background: url(../img/selection/back-swords.png) center center no-repeat transparent;
     background-size: 100% 120%;
-    width: 280px;
-    height: 150px;
+    width: 360px;
+    height: 180px;
     text-align: center;
     font-family: Birch;
     margin: auto;
-    padding-top: 50px;
+    padding-top: 65px;
     color: white;
 }
 

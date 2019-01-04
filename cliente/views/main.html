@@ -4,16 +4,16 @@
     <title>Brazor</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
-    <link rel="stylesheet" href="cliente/styles/main.css">    
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
-	<script src="cliente/src/clienteCom.js"></script>
-    <script src="cliente/src/clienteRest.js"></script>
-    <!-- <script src="cliente/src/webController.js"></script> -->
-    <script src="cliente/src/controllers/mainController.js"></script>    
-    <script src="cliente/src/racesCodeData.js"></script>
+    <link rel="stylesheet" href="cliente/styles/main.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    
+	<script src="cliente/src/clienteCom.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="cliente/src/controllers/mainController.js"></script>    
+    <script src="cliente/src/racesCodeData.js"></script>
 </head>
 
 <body>
@@ -23,12 +23,23 @@
         if ( !localStorage.user ) {
             location.href="/";
         }
+
+        if ( localStorage.firstTime ) {
+            showAlert("¡Bienvenido a Brazor! Añade a tus amigos para desafiarles");
+            localStorage.removeItem("firstTime");
+        }
     </script>
-    <div id="content" class="container-fluid">
+    <div id="alert-container" class="hidden">
+        <h1 class="alert-title"></h1>
+        <button class="play-button" onclick="hideAlert()">Aceptar</button>
+    </div>
+    <div id="alert-background" class="container-fluid hidden"></div>
+    <div id="content" class="container-fluid" style="position: absolute; top: 0;">
         <div class="col-md-12">
             <div class="row main-title">
                 <h1 id="name"></h1>
             </div>
+            <button class="close-button" style="float: right; margin-top: -90px" onclick="logOut()">Cerrar sesión</button>
         </div>
         <div class="col-md-4">
             <div id="stats-container" style="text-align: center">

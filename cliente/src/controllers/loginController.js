@@ -5,7 +5,7 @@ function loginClicked() {
     
     if ( testEmail(email) ) {
         if ( testPassword(password) ) {
-            rest.loginUser(email, password);
+            rest.loginUser(email, password, showError);
         } else {
             showError("<span>Introduce la contraseña</span>");
         }

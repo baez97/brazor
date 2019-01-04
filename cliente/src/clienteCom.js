@@ -4,7 +4,6 @@ function ClienteCom() {
     this.ini = function (user) {
         this.socket = io.connect();
         this.user = user;
-        console.log("Hey! hola " +user.name);
         this.lanzarSocketSrv();
     }
 

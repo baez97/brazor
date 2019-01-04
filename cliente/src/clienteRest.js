@@ -1,16 +1,14 @@
 function ClienteRest() {
     var cli = this;
 
-    this.loginUser = function (email, password) { 
-        console.log("REST");       
+    this.loginUser = function (email, password, errorHandler) { 
         $.ajax({
             type: 'POST',
             url: '/loginUser/',
             data: JSON.stringify({email: email, password: password}),
             success: function(data) {
                 if ( data == undefined ) {
-                    showError("No se ha podido iniciar sesión");
-                    console.log("No se ha podido iniciar sesión");
+                    errorHandler("No se ha podido iniciar sesión");
                 } else {
                     com.ini(data);
                     localStorage.setItem("user", JSON.stringify(data));
@@ -19,23 +17,24 @@ function ClienteRest() {
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                showError(errorThrown);
+                errorHandler(errorThrown);
             },
             contentType: 'application/json',
             dataType: 'json'
         })
     },
 
-    this.registerUser = function (user) {
+    this.registerUser = function (user, errorHandler) {
         $.ajax({
             type: 'POST',
             url: '/registerUser/',
             data: JSON.stringify(user),
             success: function (data) {
-                cli.loginUser(data.email, data.password);
+                localStorage.setItem("firstTime", "1");
+                cli.loginUser(user.email, user.password);
             },
             error: function(error) {
-                showError("No se ha podido registrar");
+                errorHandler("No se ha podido registrar");
             },
             contentType: 'application/json',
             dataType: 'json'
