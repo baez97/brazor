@@ -8,7 +8,7 @@ var app     = exp();
 var server  = require('http').Server(app);
 
 var io      = require('socket.io').listen(server);
-var model  = require("./server/model.js");
+var model   = require("./server/model.js");
 var comSrv  = require("./server/comSrv.js");
 var com     = new comSrv.ComSrv();
 
@@ -52,6 +52,12 @@ app.get('/main', function(request, response) {
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 })
+
+app.get('/fight', function(request, response) {
+    var contenido = fs.readFileSync("./cliente/views/fight.html");
+    response.setHeader("Content-type", "text/html");
+    response.send(contenido);
+})
 // --------------------------------------------------------------------
 
 
@@ -62,8 +68,6 @@ app.post("/loginUser/", function(req, res) {
     var email = req.body.email;
     // var password = req.body.password ? req.body.password : "";
     var password = req.body.password;
-    
-    console.log(req.body);
 
     juego.loginUser(email, password, function(data) {
         res.send(data);

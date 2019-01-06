@@ -5,6 +5,10 @@ html, body {
     min-height: 100%;
 }
 
+button:focus {
+    outline: 0;
+}
+
 .container-fluid {
     background: url(../img/selection/background.jpg) center center no-repeat;
     background-size: cover;
@@ -140,6 +144,7 @@ html, body {
 
 #profile {
     margin: auto;
+    max-height: 350px;
 }
 
 
@@ -189,10 +194,9 @@ tr:nth-child(even) {
 }
 
 .icon:hover {
-    background-size: 115%;
+    background-size: 110%;
     box-shadow: 0 5px 10px black;
 }
-
 
 .yopuka {
     background-image: url(../img/icons/yopuka.png);
@@ -238,7 +242,8 @@ tr:nth-child(even) {
     line-height: 21px;
     box-sizing: border-box;
     margin: auto;
-    margin-bottom: -30px;
+    margin-bottom: -40px;
+    margin-top: -30px;
 }
 
 .stats-deck span{
@@ -393,6 +398,28 @@ tr:nth-child(even) {
         0 -2px 4px rgb(53, 53, 53), 
         2px  0 4px rgb(53, 53, 53), 
         -2px 0 4px rgb(53, 53, 53);
+}
+
+.online {
+    width: 70px;
+    height: 70px;
+    padding: 20px;
+}
+
+.true {
+    background: url(../img/main/plus-background.png) center center no-repeat transparent;
+    background-size: 95% auto;
+}
+
+.true:hover {
+    cursor: pointer;
+    background: url(../img/main/fight.png) center center no-repeat transparent;
+    background-size: 80% auto;
+}
+
+.false {
+    background: url(../img/main/less-background.png) center center no-repeat transparent;
+    background-size: 95% auto;
 }
 
 .add-friend-button:hover {

@@ -20,12 +20,7 @@
 
 <body>
     <script>
-        rest = new ClienteRest();
-        com  = new ClienteCom();
-        
-        if ( !localStorage.user ) {
-            location.href="/";
-        }  // else {
+        // else {
         //     var localUsr = JSON.parse(localStorage.user);
         //     if ( !localUsr.online ) {
         //         console.log("Hola! veo que ya has estado por aquí...");
@@ -36,7 +31,7 @@
         // }
 
         if ( localStorage.firstTime ) {
-            showAlert("¡Bienvenido a Brazor! Añade a tus amigos para desafiarles");
+            showAlert("¡Bienvenido " + user.name + "! Añade a tus amigos para desafiarles");
             localStorage.removeItem("firstTime");
         }
     </script>
@@ -52,7 +47,7 @@
     </div>
     <div id="alert-container" class="hidden">
         <h1 class="alert-title"></h1>
-        <button class="play-button" onclick="hideAlert()">Aceptar</button>
+        <button id="alertButton" class="play-button" onclick="hideAlert()">Aceptar</button>
     </div>
     <div id="alert-background" class="container-fluid hidden" onclick="hideAlert()"></div>
     <div id="content" class="container-fluid" style="position: absolute; top: 0;">
@@ -84,7 +79,7 @@
                 </div>
             </div>
             <div id="#profile-container" style="padding-bottom: 10px;">
-                <img id="profile" style="height: 400px;">
+                <img id="profile">
             </div>
             <div class="fighters-deck">
             </div>

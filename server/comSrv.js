@@ -1,7 +1,11 @@
 function ComSrv() {
-    
+
     this.enviarRemitente = function (socket, mens, datos) {
         socket.emit(mens, datos);
+    }
+
+    this.sendTo = function (socket, message, data) {
+        socket.emit(message, data);
     }
     this.enviarATodos = function (io, nombre, mens, datos) {
         io.sockets.in(nombre).emit(mens, datos);
@@ -18,9 +22,32 @@ function ComSrv() {
             return 0;
         }
     }
+
     this.lanzarSocketSrv = function (io, juego) {
         var cli = this;
+        var clients = {};
+
         io.on('connection', function (socket) {
+
+            socket.on('updateUsersOnline', function(email, friends) {
+                clients[email] = socket;
+                if ( friends.length ) {
+                    friends.forEach(frEmail => {
+                        if ( clients[frEmail] ) {
+                            cli.sendTo(clients[frEmail], "updateUsersOnline", {});
+                        }
+                    });
+                }
+            });
+
+            socket.on('challenge', function(challenger, email) {
+                cli.sendTo(clients[email], "challenge", challenger);
+            });
+
+            socket.on('acceptChallenge', function(challenger, email) {
+                cli.sendTo(clients[email], "acceptChallenge", challenger);
+            });
+
             socket.on('crearPartida', function (usrid, nombrePartida) {
                 console.log('nueva partida: ', usrid, nombrePartida);
                 var usr = juego.obtenerUsuario(usrid);

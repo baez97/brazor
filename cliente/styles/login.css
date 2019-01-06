@@ -1,5 +1,9 @@
 @font-face { font-family: Birch; src: url(../fonts/BirchStd.otf); } 
 
+button:focus {
+    outline: 0;
+}
+
 #login-container { 
     background: url(../img/login/bg-form.png) top center no-repeat transparent;
     background-size: 100% 75%;

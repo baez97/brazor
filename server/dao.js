@@ -36,10 +36,7 @@ function Dao() {
     }
 
     this.findDocument = function ( collection, filter, callback ) {
-        console.log("HOLA! has llamado a find user con el filtro ");
-        console.log(filter);
         collection.find(filter).toArray(function(error, result) {
-            console.log(result);
             if ( error || result.length == 0 ) {
                 callback(undefined);
             } else {
@@ -77,17 +74,13 @@ function Dao() {
             if ( err || result.length == 0 ) {
                 callback(undefined);
             } else {
-                console.log(result);
                 callback(result.value);
             }
         })
-
-        this.users.findAndModify
     }
 
     this.logoutUser = function ( filter, callback ) {
         this.users.findOneAndUpdate(filter, {$set: {online: false}}, function( err, result ) {
-            console.log(result);
             if ( err || result.length == 0 ) {
                 callback(undefined);
             } else {

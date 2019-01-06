@@ -1,5 +1,5 @@
 function select(nameOfRace) {
-    $(".error-box").empty();
+    $("#errorBox").empty();
 
     user.fighters.forEach((fighter) => {
         if (fighter.name == nameOfRace) {
@@ -18,6 +18,8 @@ function selectLocked() {
 user = user;
 
 function fillData() {
+    console.log("Filling data when user is:");
+    console.log(user);
     fillName();
     $(document).ready( () => { 
         fillStats( () => {
@@ -37,9 +39,9 @@ function fillFriends() {
     var chain = `
         <thead>
             <tr>
-                <th>En línea</th>
+                <th style="text-align: center"></th>
                 <th>Nombre</th>
-                <th>Diplomas</th>
+                <th style="text-align: center">Diplomas</th>
             </tr>
         </thead>`;
 
@@ -47,15 +49,32 @@ function fillFriends() {
         friends.forEach( (friend) => {
             chain += `
                 <tr>
-                    <td>NO</td>
+                    <td style="text-align: center; width: 40px">
+                        <span onclick="challenge('${friend.name}', ${friend.online}, '${friend.email}')" 
+                              class="online ${friend.online}">
+                        </span>
+                    </td>
                     <td>${friend.name}</td>
-                    <td>${friend.diplomas}</td>
+                    <td style="text-align: center">${friend.diplomas}</td>
                 </tr>`;
         })
         $('#friends-table').empty();
         $('#friends-table').append(chain);
     });
 
+}
+
+function challenge(name, online, email) {
+    if ( !online ) {
+        showError(`<h1>${name} no está conectado</h1>`);
+    } else {
+        com.challenge(user, email);
+    }
+}
+
+function acceptChallenge(email) {
+    com.acceptChallenge(user, email);
+    hideAlert();
 }
 
 function fillStats(callback) {
@@ -85,12 +104,16 @@ function fillFighters(callback) {
 function logOut() {
     rest.logoutUser(user.email, function() {
         localStorage.removeItem("user");
+        localStorage.setItem("loggedOut", "1");
+        com.updateUsersOnline(user.email, user.friends);
         location.href="/";
     });
 }
 
 function disconnectUser() {
-    rest.logoutUser(user.email, () => {});
+    rest.logoutUser(user.email, function() {
+        com.updateUsersOnline(user.email, user.friends);
+    });
 }
 
 function hideAlert() {
@@ -107,6 +130,16 @@ function showAlert(message) {
         $("#alert-container").removeClass("hidden");
         $("#alert-background").removeClass("hidden");
         $(".alert-title").text(message);
+        $("#alertButton").attr("onclick", "hideAlert()");
+    })
+}
+
+function showReceiveChallenge(challenger) {
+    $(document).ready( function() {
+        $("#alert-container").removeClass("hidden");
+        $("#alert-background").removeClass("hidden");
+        $(".alert-title").text(`${challenger.name} te está desafiando, yo que tú le calentaba...`);
+        $("#alertButton").attr("onclick", `acceptChallenge("${challenger.email}")`);
     })
 }
 
@@ -122,7 +155,7 @@ function addFriend() {
     if ( isEmail(text) ) {
         rest.addFriendByEmail(user, text, function(success) {
             if ( success ) {
-                user.friends.add(text);
+                user.friends.push(text);
                 localStorage.setItem("user", JSON.stringify(user));
                 fillFriends();
                 hideAlert();
@@ -143,11 +176,25 @@ function isEmail(email) {
 }
 
 var user;
-$(document).ready(function () {
-    user = JSON.parse(localStorage.getItem("user"));
-    fillData();
-});
+rest = new ClienteRest();
+com = new ClienteCom();
 
-window.onbeforeunload = function (e) {
-    disconnectUser();
+if ( !localStorage.user ) {
+    location.href="/";
+} else {
+    user = JSON.parse(localStorage.getItem("user"));
+    localStorage.removeItem("loggedOut");
+
+    rest.onlineUser(user.email, user.password, showError, function(data) {
+        if ( data ) {
+            user = JSON.parse(localStorage.getItem("user"));
+        }
+    });
+    com.ini(user);
+    fillData();
+    com.updateUsersOnline(user.email, user.friends);
 }
+
+$(window).on("beforeunload", function() {
+    disconnectUser();
+})

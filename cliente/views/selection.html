@@ -49,9 +49,9 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" style="text-align: center">
             <div style="padding-bottom: 40px;">
-                <img id="profile" style="height: 400px;" src = "cliente/img/profiles/yopuka.png">
+                <img id="profile" style="max-height: 350px;" src = "cliente/img/profiles/yopuka.png">
             </div>
             <div class="selection-deck">
                 <button class="icon yopuka"    onClick="select('yopuka')"></button>
@@ -63,8 +63,6 @@
                 <button class="icon ocra"      onClick="select('ocra')"></button>
                 <button class="icon osamodas"  onClick="select('osamodas')"></button>
             </div>
-            <button class="play-button" onClick="confirmSelection()">Seleccionar</button>
-            <div id="errorBox"></div>
         </div>
             
         <div class="col-md-4">
@@ -72,6 +70,11 @@
                 <span id="life"   class="stat-icon heart">100</span>
                 <span id="damage" class="stat-icon power">40</span>
             </div>
+        </div>
+
+        <div class="col-md-12" style="text-align: center">
+            <button class="play-button" onClick="confirmSelection()">Seleccionar</button>
+            <div id="errorBox"></div>
         </div>
 
         

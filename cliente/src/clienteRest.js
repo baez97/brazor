@@ -1,7 +1,7 @@
 function ClienteRest() {
     var cli = this;
 
-    this.loginUser = function (email, password, errorHandler) {
+    this.loginUser = function (email, password, errorHandler, callback) {
         $.ajax({
             type: 'POST',
             url: '/loginUser/',
@@ -10,12 +10,30 @@ function ClienteRest() {
                 if ( data == undefined ) {
                     errorHandler("No se ha podido iniciar sesión");
                 } else {
-                    console.log("Hemos triunfao");
-                    com.ini(data);
+                    // com.ini(data);
                     data.password = password;
                     localStorage.setItem("user", JSON.stringify(data));
                     location.href = '/main';
-                    //mostrarCrearPartida();
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                errorHandler(errorThrown);
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        })
+    },
+
+    this.onlineUser = function (email, password, errorHandler, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/loginUser/',
+            data: JSON.stringify({email: email, password: password}),
+            success: function(data) {
+                if ( data == undefined ) {
+                    errorHandler("No se ha podido iniciar sesión");
+                } else {
+                    callback(data);
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -90,7 +108,6 @@ function ClienteRest() {
             dataType: 'json'
         });
     }
-
 
     this.obtenerPartidas = function () {
         $.getJSON("/obtenerPartidas", function (data) {

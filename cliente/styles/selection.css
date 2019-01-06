@@ -1,5 +1,12 @@
 @font-face { font-family: Birch; src: url(../fonts/BirchStd.otf); } 
 
+button:focus {
+    outline: 0;
+}
+
+.col-md-4 {
+    text-align: center;
+}
 .selection-title {
     background: url(../img/selection/back-swords.png) center center no-repeat transparent;
     background-size: 100% 120%;
@@ -12,12 +19,16 @@
     color: white;
 }
 
+#profile {
+    margin: auto;
+}
 .selection-deck {
     margin-top: 20px;
     line-height: 21px;
     box-sizing: border-box;
-    margin: 0 -200px;
+    margin: 0 -90px;
 }
+
 
 .selection-deck button {
     border: none;
@@ -28,8 +39,7 @@
     display: block;
     line-height: 21px;
     box-sizing: border-box;
-    text-align: left;
-    margin-left: -40px;
+    margin: auto;
 }
 
 .stats-deck span{
@@ -134,8 +144,9 @@
     background-size: 100% 100%;
     color: white;
     padding: 100px 80px;
+    margin:auto;
     margin-top: -50px;
-    float: right;
+    vertical-align: center;
 } 
 
 .selection-description h3 {
@@ -154,8 +165,8 @@ html, body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    text-align: center;
-    height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 .play-button {

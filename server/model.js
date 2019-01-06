@@ -11,7 +11,6 @@ class Juego {
 
     loginUser(email, password, callback) {
         var self = this;
-        console.log("HOLA " + email + " + " + password);
         var cryptedPassword = cf.encrypt(password);
 
         let filter = { email: email, password: cryptedPassword }
@@ -44,10 +43,8 @@ class Juego {
         var self = this;
         this.dao.findUser({email: email}, function(newFriend) {
             if ( newFriend ) {
-                console.log("Model has found " + newFriend.name)
                 self.addFriends(user, newFriend, callback)
             } else {
-                console.log("Model couldn't find " + email);
                 callback(undefined);
             }
         })
@@ -58,11 +55,8 @@ class Juego {
 
         self.dao.addFriend(user1, user2.email, function(result) {
             if ( result ) {
-                console.log(`${user1.name} was correctly updated`);
-                console.log(result);
                 self.dao.addFriend(user2, user1.email, callback);
             } else {
-                console.log(`${user2.name} was NOT correctly updated`);
                 callback(result);
             }
         })
@@ -81,7 +75,8 @@ class Juego {
                         friend = {
                             email: email,
                             name: result.name,
-                            diplomas: result.diplomas
+                            diplomas: result.diplomas,
+                            online: result.online
                         }
                         collection.push(friend);
                         resolve();
