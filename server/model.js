@@ -4,9 +4,18 @@ var dao = require("./dao.js");
 class Juego {
     constructor() {
         this.dao = new dao.Dao();
+        this.fightPlaces = [];
         this.dao.connect( function(db) {
             console.log("conectado a la base de datos");
         })
+    }
+
+    getUser(email, callback) {
+        var self  = this;
+        let filter = { email: email };
+        self.dao.findUser(filter, function(user) {
+            callback(user);
+        });
     }
 
     loginUser(email, password, callback) {
@@ -95,6 +104,21 @@ class Juego {
                 console.log(err);
                 callback(undefined);
             });
+    }
+
+    createFightPlace(user1, user2, callback) {
+        var newPlaceID = "place-" + this.fightPlaces.length;
+        var newPlace = new FightPlace(user1, user2, newPlaceID);
+        this.fightPlaces.push(newPlace);
+        callback(newPlaceID);
+    }
+}
+
+class FightPlace {
+    constructor(user1, user2, id) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.id = id;
     }
 }
 

@@ -7,6 +7,11 @@ function ComSrv() {
     this.sendTo = function (socket, message, data) {
         socket.emit(message, data);
     }
+
+    this.sendToFightPlace = function(io, fightPlaceID, message, data) {
+        io.sockets.in(fightPlaceID).emit(message, data);
+    }
+
     this.enviarATodos = function (io, nombre, mens, datos) {
         io.sockets.in(nombre).emit(mens, datos);
     }
@@ -26,6 +31,7 @@ function ComSrv() {
     this.lanzarSocketSrv = function (io, juego) {
         var cli = this;
         var clients = {};
+        var fightPlaces = {};
 
         io.on('connection', function (socket) {
 
@@ -41,11 +47,22 @@ function ComSrv() {
             });
 
             socket.on('challenge', function(challenger, email) {
+                console.log(Object.keys(clients));
                 cli.sendTo(clients[email], "challenge", challenger);
             });
 
             socket.on('acceptChallenge', function(challenger, email) {
-                cli.sendTo(clients[email], "acceptChallenge", challenger);
+                juego.getUser(email, function(challenged) {
+                    juego.createFightPlace(challenger, challenged, function(fightPlaceID) {
+                        console.log(challenger);
+                        console.log(challenged);
+                        console.log(fightPlaceID);
+
+                        var data = { challenged: challenged, challenger: challenger, fightPlaceID: fightPlaceID}
+                        cli.sendTo(clients[challenged.email], "goToFight", data)
+                        cli.sendTo(clients[challenger.email], "goToFight", data)
+                    });
+                });
             });
 
             socket.on('crearPartida', function (usrid, nombrePartida) {
@@ -112,6 +129,7 @@ function ComSrv() {
                     }
                 }
             });
+
             socket.on('pasarTurno', function(usrid, nombrePartida) {
                 var usr = juego.obtenerUsuario(usrid);
                 if ( usr ) {
@@ -234,7 +252,7 @@ function ComSrv() {
                     partida.agregarMensaje(mensaje);
                     cli.enviarATodos(io, nombrePartida, "mostrarMensajes", partida.obtenerMensajes());
                 }
-            })
+            });
                 
         });
     };

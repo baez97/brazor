@@ -50,6 +50,8 @@ function ClienteRest() {
             url: '/logoutUser',
             data: JSON.stringify({email: email}),
             success: function(data) {
+                console.log(email);
+                com.disconnect(email);
                 callback();
             },
             error: function(err) {

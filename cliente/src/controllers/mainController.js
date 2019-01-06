@@ -68,6 +68,7 @@ function challenge(name, online, email) {
     if ( !online ) {
         showError(`<h1>${name} no está conectado</h1>`);
     } else {
+        showAlert(`Esperando respuesta de ${name}...`);
         com.challenge(user, email);
     }
 }
