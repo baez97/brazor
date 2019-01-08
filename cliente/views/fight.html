@@ -4,19 +4,26 @@
     <title>Brazor</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="cliente/styles/fight.css">    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     
-	<script src="cliente/src/clienteCom.js"></script>
+	<script src="cliente/src/fightCom.js"></script>
     <script src="cliente/src/clienteRest.js"></script>
-    <!-- <script src="cliente/src/controllers/fightController.js"></script> -->
+    <script src="cliente/src/controllers/fightController.js"></script>
     <script src="cliente/src/racesCodeData.js"></script>
 </head>
 <body>
-    <h1 id="enemyName"></h1>
     <script>
-        
+        if ( !localStorage.fightPlaceID ) {
+            location.href="/main";
+        }
     </script>
+    <div class="container-fluid" style="position: absolute; top: 0;">
+        <table id="arena">
+        </table>
+    </div>
+    
 </body>

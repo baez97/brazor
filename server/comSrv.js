@@ -35,6 +35,32 @@ function ComSrv() {
 
         io.on('connection', function (socket) {
 
+            socket.on('saludar', function(name, fightPlaceID) {
+                io.sockets.in(fightPlaceID).emit("saludar", name);
+            });
+
+            socket.on('join', function(fightPlaceID) {
+                socket.join(fightPlaceID);
+                var fightPlace = juego.getFightPlace(fightPlaceID);
+                cli.sendTo(socket, "setFightPlace", fightPlace);
+            });
+
+            socket.on('simulateFightPlace', function(user1, user2, id) {
+                juego.simulateFightPlace(user1, user2, id);
+            });
+
+            socket.on('moveFighter', function(playerName, fighterName, movement, fightPlaceID) {
+                juego.moveFighter(playerName, fighterName, movement, fightPlaceID);
+                var currentFightPlace = juego.getFightPlace(fightPlaceID);
+                cli.sendToFightPlace(io, fightPlaceID, "update", currentFightPlace);
+            });
+
+            socket.on('attackFighter', function(playerName, fighterName, objectivePos, fightPlaceID) {
+                juego.attackFighter(playerName, fighterName, objectivePos, fightPlaceID);
+                var currentFightPlace = juego.getFightPlace(fightPlaceID);
+                cli.sendToFightPlace(io, fightPlaceID, "update", currentFightPlace);
+            })
+
             socket.on('updateUsersOnline', function(email, friends) {
                 clients[email] = socket;
                 if ( friends.length ) {
@@ -54,13 +80,9 @@ function ComSrv() {
             socket.on('acceptChallenge', function(challenger, email) {
                 juego.getUser(email, function(challenged) {
                     juego.createFightPlace(challenger, challenged, function(fightPlaceID) {
-                        console.log(challenger);
-                        console.log(challenged);
-                        console.log(fightPlaceID);
-
                         var data = { challenged: challenged, challenger: challenger, fightPlaceID: fightPlaceID}
-                        cli.sendTo(clients[challenged.email], "goToFight", data)
-                        cli.sendTo(clients[challenger.email], "goToFight", data)
+                        cli.sendTo(clients[challenged.email], "goToFight", data);
+                        cli.sendTo(clients[challenger.email], "goToFight", data);
                     });
                 });
             });

@@ -7,6 +7,8 @@ function signinClicked() {
 
     if ( name == "" || email == "" || password == "") {
         showError("Los tres campos son necesarios");
+    } else if (/\s/.test(name)) {
+        showError("El nombre de cuenta no puede contener espacios");
     } else if (!isEmail(email)) {
         showError("Email no válido");
     } else {
