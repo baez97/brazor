@@ -29,6 +29,10 @@ function FightCom() {
     this.attackFighter = function(fighterName, objectivePos) {
         this.socket.emit('attackFighter', this.player.name, fighterName, objectivePos, this.fightPlaceID);
     }
+    
+    this.spendTurn = function() {
+        this.socket.emit('spendTurn', this.player.name, this.fightPlaceID);
+    }
 
     this.saludar = function(player, fightPlaceID) {
         this.socket.emit('saludar', player.name, fightPlaceID);

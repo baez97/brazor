@@ -7,7 +7,11 @@ class Juego {
         this.fightPlaces = [];
         this.dao.connect( function(db) {
             console.log("conectado a la base de datos");
-        })
+        });
+        this.races = [
+            'yopuka', 'feca', 'ocra', 'aniripsa',
+            'timador', 'osamodas', 'sadida', 'sacrogito'
+        ];
     }
 
     getUser(email, callback) {
@@ -25,7 +29,7 @@ class Juego {
         let filter = { email: email, password: cryptedPassword }
         self.dao.loginUser(filter, function(user) {
             if ( user == null ) {
-                self.dao.findUser(filter, callback);
+                callback({error: true});
             } else {
                 callback(user);
             }
@@ -138,7 +142,50 @@ class Juego {
 
     attackFighter(playerName, fighterName, objectivePos, fightPlaceID) {
         var fightPlace = this.getFightPlace(fightPlaceID);
-        return fightPlace.attackFighter(playerName, fighterName, objectivePos)
+        var change = fightPlace.attackFighter(playerName, fighterName, objectivePos);
+
+        change.end = this.isTheEnd(fightPlaceID); 
+
+        return change;
+    }
+
+    spendTurn(playerName, fightPlaceID) {
+        var fightPlace = this.getFightPlace(fightPlaceID);
+        fightPlace.spendTurn(playerName);
+    }
+
+    isTheEnd(fightPlaceID) {
+        var fightPlace = this.getFightPlace(fightPlaceID);
+        return fightPlace.isTheEnd();
+    }
+
+    unlockFighter(user, callback) {
+        if ( user.fighters.length >= 4 ) {
+            callback(false);
+        } else {
+            var newFighter = user.fighters[0].name;
+            while ( this.userHasFighter(user, newFighter) ) {
+                newFighter = this.getRandomFighter();
+            }
+            callback(newFighter);
+        }
+    }
+
+    getRandomFighter() {
+        let randomIndex = Math.floor(Math.random()*this.races.length);
+        console.log(this.races[randomIndex]);
+        return this.races[randomIndex];
+    }
+
+    userHasFighter(user, fighterName) {
+        var found = user.fighters.find((fighter) => {
+            return fighter.name == fighterName;
+        });
+        if ( found == undefined ) {
+            return false;
+        } else {
+            return found;
+        }
     }
 }
 
@@ -146,6 +193,7 @@ class FightPlace {
     constructor(player1, player2, id) {
         this.player1 = player1;
         this.player2 = player2;
+        this.player1.isYourTurn();
         this.id = id;
         this.initFighters();
     }
@@ -157,6 +205,7 @@ class FightPlace {
         this.player1.fighters.forEach( (fighter) => {
             fighter.x = i;
             fighter.y = 0;
+            fighter.movementPoints = 6;
             newFighters1.push(new Fighter(fighter, this.player1.killFighter));
             i--;
         });
@@ -168,6 +217,7 @@ class FightPlace {
             fighter.x = i;
             fighter.y = 9;
             fighter.player = this.player2;
+            fighter.movementPoints = 6;
             newFighters2.push(new Fighter(fighter, this.player2.killFighter));            
             i++;
         });
@@ -192,17 +242,33 @@ class FightPlace {
     }
 
     moveFighter(playerName, fighterName, movement) {
-        var player     = this.getPlayer(playerName);
+        var player = this.getPlayer(playerName);
         player.moveFighter(fighterName, movement);
     }
 
     attackFighter(playerName, fighterName, objectivePos) {
-        console.log(arguments);
         var player = this.getPlayer(playerName);
         var enemy = this.getEnemy(playerName);
-        var objectiveFighter = enemy.getFighterAtPos(objectivePos);
 
         return player.attackFighter(fighterName, enemy, objectivePos);
+    }
+
+    spendTurn(playerName) {
+        var player = this.getPlayer(playerName);
+        var enemy  = this.getEnemy(playerName);
+        if ( player.turn ) {
+            player.isNotYourTurn();
+            enemy.isYourTurn();
+        }
+    }
+
+    isTheEnd() {
+        if ( this.player1.isDead() ) {
+            return this.player1.name;
+        } else if ( this.player2.isDead() ) {
+            return this.player2.name;
+        }
+        return undefined;
     }
 }
 
@@ -212,6 +278,7 @@ class Player {
         this.name = user.name;
         this.email = user.email;
         this.fighters = JSON.parse(JSON.stringify(user.fighters));
+        this.turn = false;
     }
 
     getFighter(name) {
@@ -242,6 +309,29 @@ class Player {
         var fighter = this.getFighterAtPos(objectivePos);
         fighter.getAttacked(damage);
     }
+
+    isDead() {
+        var aliveFighters = this.fighters.find( (fighter) => {
+            return fighter.dead === false;
+        });
+
+        return aliveFighters == undefined;
+    }
+
+    isYourTurn() {
+        this.turn = true;
+    }
+
+    isNotYourTurn() {
+        this.turn = false;
+        this.resetFighters();
+    }
+
+    resetFighters() {
+        this.fighters.forEach( (fighter) => {
+            fighter.resetPoints();
+        })
+    }
 }
 
 class Fighter {
@@ -254,14 +344,21 @@ class Fighter {
         this.y = y;
         this.reach = fighter.reach;
         this.killFunction = killFunction;
+        this.movementPoints = fighter.movementPoints;
+        this.hasAttacked = false;
         this.dead = false;
     }
 
     move(movement) {
-        if ( movement.x >= 0 && movement.x <= 13 ) {
-            if ( movement.y >= 0 && movement.y <= 9 ) {
+        var distX, distY;
+        if ( movement.x >= 0 && movement.x <= 13 )
+        if ( movement.y >= 0 && movement.y <= 9  ) {
+            distX = Math.abs(movement.x-this.x);
+            distY = Math.abs(movement.y-this.y);
+            if ( distX + distY < this.movementPoints ) {
                 this.x = movement.x;
-                this.y = movement.y;        
+                this.y = movement.y;
+                this.movementPoints -= ( distX + distY );
             }
         }
     }
@@ -269,8 +366,11 @@ class Fighter {
     attack(enemy, objectivePos) {
         if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
             if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
-                enemy.getAttackedFighter(objectivePos, this.damage);
-                return { position: objectivePos, damage: (this.damage*(-1)) };
+                if ( ! this.hasAttacked ) {
+                    this.hasAttacked = true;
+                    enemy.getAttackedFighter(objectivePos, this.damage);
+                    return { position: objectivePos, damage: (this.damage*(-1)) };
+                } 
             }
         }
     }
@@ -280,6 +380,11 @@ class Fighter {
         if ( this.life <= 0 ) {
             this.dead = true;
         }
+    }
+
+    resetPoints() {
+        this.movementPoints = 4;
+        this.hasAttacked = false;
     }
 }
 

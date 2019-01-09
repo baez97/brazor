@@ -98,6 +98,25 @@ describe("The game...", function () {
         expect(enemy.fighters[0].life).toEqual(previousLife - damage);
     });
 
+    it("kills the fighters", function() {
+        var fightPlace = game.getFightPlace("place-0");
+
+        game.moveFighter("Testing1", "yopuka", {x: 5, y: 5}, "place-0");
+        game.moveFighter("Testing2", "sacrogito", {x: 5, y: 6}, "place-0");
+
+        var player = fightPlace.getPlayer("Testing1");
+        var enemy = fightPlace.getEnemy("Testing1");
+        var previousLife = enemy.fighters[0].life;
+        var damage = player.fighters[0].damage;
+
+        for ( let i = previousLife; i > 0; i-= damage ) {
+            game.attackFighter("Testing1", "yopuka", {x: 5, y: 6}, "place-0");
+        }
+
+        expect(game.isTheEnd("place-0")).toEqual("Testing2");
+
+    })
+
     describe("The Fight Place...", function() {
         beforeEach(() => {
             fightPlace = game.getFightPlace("place-0");

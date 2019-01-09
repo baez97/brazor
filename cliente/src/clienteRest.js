@@ -1,14 +1,14 @@
 function ClienteRest() {
     var cli = this;
 
-    this.loginUser = function (email, password, errorHandler, callback) {
+    this.loginUser = function (email, password, errorHandler) {
         $.ajax({
             type: 'POST',
             url: '/loginUser/',
             data: JSON.stringify({email: email, password: password}),
             success: function(data) {
-                if ( data == undefined ) {
-                    errorHandler("No se ha podido iniciar sesión");
+                if ( data.error != undefined ) {
+                    errorHandler("Email o contraseña incorrectos");
                 } else {
                     // com.ini(data);
                     data.password = password;
@@ -100,6 +100,22 @@ function ClienteRest() {
             type: 'POST',
             url: '/getFriends',
             data: JSON.stringify({friends: friends}),
+            success: function(data) {
+                callback(data);
+            },
+            error: function(error) {
+                callback(false);
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    }
+
+    this.unlockFighter = function(user, callback) {
+        $.ajax({
+            type: 'PUT',
+            url: '/unlockFighter',
+            data: JSON.stringify({user: user}),
             success: function(data) {
                 callback(data);
             },

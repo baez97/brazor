@@ -18,8 +18,6 @@ function selectLocked() {
 user = user;
 
 function fillData() {
-    console.log("Filling data when user is:");
-    console.log(user);
     fillName();
     $(document).ready( () => { 
         fillStats( () => {
@@ -176,6 +174,13 @@ function isEmail(email) {
     return regex.test(email);
 }
 
+function unlockFighter() {
+    rest.unlockFighter(user, function(data) {
+        showAlert("¡Has desbloqueado un luevo luchador! \n" + data.newFighter);
+        localStorage.removeItem("hasWonAFight");
+    });
+}
+
 var user;
 rest = new ClienteRest();
 com = new ClienteCom();
@@ -186,14 +191,21 @@ if ( !localStorage.user ) {
     user = JSON.parse(localStorage.getItem("user"));
     localStorage.removeItem("loggedOut");
 
+    if ( localStorage.hasWonAFight != undefined ) {
+        showAlert("Has ganado 15 puntos de experiencia");
+        unlockFighter();
+    }
+
     rest.onlineUser(user.email, user.password, showError, function(data) {
         if ( data ) {
             user = JSON.parse(localStorage.getItem("user"));
         }
     });
+
     com.ini(user);
     fillData();
     com.updateUsersOnline(user.email, user.friends);
+
 }
 
 $(window).on("beforeunload", function() {

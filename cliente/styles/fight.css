@@ -1,6 +1,12 @@
+@font-face { font-family: Birch; src: url(../fonts/BirchStd.otf); } 
+
 html, body {
     margin: 0;
     min-height: 100%;
+}
+
+button:focus {
+    outline: 0;
 }
 
 .container-fluid {
@@ -22,6 +28,7 @@ html, body {
     box-shadow: inset 0 0 10px black;
     border-radius: 15px;
     border-collapse: collapse;
+    margin-top: 30px;
 }
 
 td, tr {
@@ -110,6 +117,10 @@ td, tr {
     background-color: blue;
 }
 
+.light-blue {
+    background-color: rgb(43, 170, 255);
+}
+
 .reached {
     /* border: 2px solid blue; */
     background-color: blue
@@ -122,36 +133,150 @@ td, tr {
 
 /* TOOLTIPING FOR LIVE */
 td .tooltiptext {
-  visibility: hidden;
-  width: 140px;
-  background-color: rgba(56, 56, 56, 0.8);
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -70px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: 0 2px 10px black;
-  font-size: 20px;
+    visibility: hidden;
+    width: 140px;
+    background-color: rgba(56, 56, 56, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -70px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 10px black;
+    font-size: 20px;
 }
 
 .icon .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
 
 .icon:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+    visibility: visible;
+    opacity: 1;
+}
+
+#turn-button {
+    font-family: Birch;
+    width: 230px;
+    height: 111px;
+    text-align: center;
+    justify-content: center;
+    padding-top: 12px;
+    color: #2f2f25;
+    line-height: 20px;
+    transition: all .1s;
+    font-weight: 700;
+    border: 0;
+    margin-right: 300px;
+}
+
+.pass-turn-button {
+    background: url(../img/btn-play1.png) center center no-repeat transparent;
+    background-size: 95% auto;
+    font-size: 30px;
+}
+
+.pass-turn-button:before {
+    content: "Pasar turno";
+}
+
+.pass-turn-button:hover {
+    background: url(../img/btn-play1-over.png) center center no-repeat transparent;
+    background-size: 100%;
+    font-size: 40px;
+    transition: all .1s;
+    line-height: 27px;
+}
+
+.no-turn-button {
+    background: url(../img/close-btn.png) center center no-repeat transparent;
+    background-size: 95% auto;
+    font-size: 30px;
+}
+
+.no-turn-button:before {
+    content: "No es tu turno";
+}
+
+.no-turn-button:hover {
+    background: url(../img/close-btn-over.png) center center no-repeat transparent;
+    background-size: 100%;
+    font-size: 35px;
+    color: rgb(40, 40, 40);
+    transition: all .1s;
+    line-height: 27px;
+}
+
+.play-button {
+    background: url(../img/btn-play1.png) center center no-repeat transparent;
+    font-family: Birch;
+    background-size: 95% auto;
+    width: 230px;
+    height: 111px;
+    font-size: 30px;
+    text-align: center;
+    justify-content: center;
+    padding-top: 12px;
+    color: #2f2f25;
+    line-height: 20px;
+    transition: all .1s;
+    font-weight: 700;
+    border: 0;
+}
+
+.play-button:hover {
+    background: url(../img/btn-play1-over.png) center center no-repeat transparent;
+    background-size: 100%;
+    font-size: 40px;
+    transition: all .1s;
+    line-height: 27px;
+}
+
+#alert-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: black;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+#alert-container{
+    max-width: 600px;
+    min-width: 600px;
+    min-height: 500px;
+    background: url(../img/selection/bg-description.png) center center no-repeat transparent;
+    background-size: 100% 100%;
+    color: white;
+    padding: 140px 120px;
+    padding-bottom: 110px;
+    z-index: 2;
+    position: relative;
+    margin: auto;
+    margin-top: 150px;
+    max-width: 400px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.alert-title {
+    margin-top: 80px;
+    font-size: 40px;
+    font-family: Birch;
+    text-align: center;
+    color: white;
 }

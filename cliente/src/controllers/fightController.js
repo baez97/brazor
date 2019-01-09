@@ -14,21 +14,27 @@ function setFightPlace(fP) {
 
 // PAINTING FIGHTERS
 function paintFighters() {
-    var playerFighters, enemyFighters;
+    var playerFighters, enemyFighters, turn;
     if ( fightPlace.player1.name === player.name ) {
         playerFighters = fightPlace.player1.fighters;
         enemyFighters = fightPlace.player2.fighters;
+        turn = fightPlace.player1.turn;
     } else {
         playerFighters = fightPlace.player2.fighters;
         enemyFighters = fightPlace.player1.fighters;
+        turn = fightPlace.player2.turn;
     }
 
     playerFighters.forEach( (fighter) => {
         $(`.${player.name}.${fighter.name}`).removeClass(`icon ${fighter.name}`);
         if ( !fighter.dead ) {
             $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + player.name);
-            $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `selectFighter("${fighter.name}")`);
-            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`💙 ${fighter.life} &nbsp 🥊 ${fighter.damage}`);
+            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`💙 ${fighter.life} &nbsp 🔥 ${fighter.damage}`);
+            if ( turn ) {
+                $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `selectFighter("${fighter.name}")`);
+            } else {
+                $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `hideMovement()`);
+            }
         }
     });
 
@@ -37,17 +43,34 @@ function paintFighters() {
         if ( !fighter.dead ) {
             $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + enemy.name);
             $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", "hideMovement()");
-            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`❤️ ${fighter.life} &nbsp 🥊 ${fighter.damage}`);      
+            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`❤️ ${fighter.life} &nbsp 🔥 ${fighter.damage}`);      
         }
     });
 
+    if ( turn ) {
+        $("#turn-button").removeClass("no-turn-button");
+        $("#turn-button").addClass("pass-turn-button");
+        $("#turn-button").attr("onclick", "spendTurn()");
+    } else {
+        $("#turn-button").removeClass("pass-turn-button");
+        $("#turn-button").addClass("no-turn-button");
+        $("#turn-button").attr("onclick", "hideMovement()");
+    }
+
     if ( change && Object.keys(change).length ) {
-        var { position, damage } = change;
+        var position = change.position;
+        var damage   = change.damage;
+
         if ( damage <= 0 ) {
             $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
         } else {
             $(`#C-${position.x}-${position.y}`).append(`<div class='heal'>+${damage}</div>`);
         }
+        
+        if ( change.end != undefined ) {
+            fightIsOver(change.end);
+        }
+
         change = 0;
     }
 }
@@ -55,7 +78,7 @@ function paintFighters() {
 function selectFighter(fighterName) {
     var fighter = getFighter(fighterName);
     $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `reselectFighter("${fighter.name}")`);
-    var movements = getReachable(fighter, 3);
+    var movements = getReachable(fighter, fighter.movementPoints);
     movements.forEach ( movement => {
         if ( ! $(`#C-${movement.x}-${movement.y}`).hasClass("icon") ) {
             $(`#C-${movement.x}-${movement.y}`).addClass("green")
@@ -68,14 +91,23 @@ function reselectFighter(fighterName) {
     var fighter = getFighter(fighterName);
     var attacks = getReachable(fighter, fighter.reach);
     hideMovement();
-    attacks.forEach ( attack => {
-        if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
-            $(`#C-${attack.x}-${attack.y}`).addClass("blue");
-        } else {
-            $(`#C-${attack.x}-${attack.y}`).addClass("reached");
-            $(`#C-${attack.x}-${attack.y}`).attr("onclick", `attackFighter("${fighterName}", ${attack.x}, ${attack.y})`);
-        }
-    });
+    if ( ! fighter.hasAttacked ) {
+        attacks.forEach ( attack => {
+            if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
+                $(`#C-${attack.x}-${attack.y}`).addClass("blue");
+            } else {
+                $(`#C-${attack.x}-${attack.y}`).addClass("reached");
+                $(`#C-${attack.x}-${attack.y}`).attr("onclick", `attackFighter("${fighterName}", ${attack.x}, ${attack.y})`);
+            }
+        });
+    } else {
+        attacks.forEach ( attack => {
+            if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
+                $(`#C-${attack.x}-${attack.y}`).addClass("light-blue");
+            } 
+        });
+    }
+    
 }
 
 function getFighter(fighterName) {
@@ -87,7 +119,6 @@ function getFighter(fighterName) {
 }
 
 function getReachable(fighter, reach) {
-    // var reach = fighter.reach;
     var x = fighter.x; var y = fighter.y;
     var reachableCells = [];
     for ( let i = 0; i <= reach; i++ ) {
@@ -143,6 +174,7 @@ function hideMovement() {
     $(".green").removeClass("green");
     $(".blue").attr("onclick", "hideMovement()");
     $(".blue").removeClass("blue");
+    $(".light-blue").removeClass("light-blue");
     $(".reached").attr("onclick", "hideMovement()");
     $(".reached").removeClass("reached");
     $(".damage").fadeOut(1700);
@@ -152,6 +184,32 @@ function hideMovement() {
 
 function addChange(c) {
     change = c;
+}
+
+function spendTurn() {
+    com.spendTurn();
+}
+
+function fightIsOver(loserName) {
+    if ( player.name == loserName ) {
+        showAlert("Qué verguenza...");
+    } else {
+        localStorage.setItem("hasWonAFight", "true");
+        showAlert("No está nada mal");
+    }
+    localStorage.removeItem("fightPlace")
+    localStorage.removeItem("player")
+    localStorage.removeItem("enemy")
+    localStorage.removeItem("fightPlaceID")
+}
+
+function showAlert(message) {
+    $(document).ready( function() {
+        $("#alert-container").removeClass("hidden");
+        $("#alert-background").removeClass("hidden");
+        $(".alert-title").text(message);
+        $("#alertButton").attr("onclick", "location.href='/main'");
+    })
 }
 
 // function paintMovement(fighter) {
