@@ -60,8 +60,9 @@ function FightCom() {
             setFightPlace(fightPlace);
         });
 
-        cli.socket.on("update", function(fightPlace) {
-            updateDisplay(fightPlace);
+        cli.socket.on("update", function(data) {
+            addChange(data.change);
+            updateDisplay(data.currentFightPlace);
         })
 
         cli.socket.on('updateUsersOnline', function() {

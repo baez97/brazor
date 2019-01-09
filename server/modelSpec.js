@@ -1,10 +1,11 @@
 var model = require('./model.js');
 describe("The game...", function () {
-    var game = new model.Juego();
+    var game;
     var usr1, usr2;
     var fightPlace;
-
+    
     beforeEach(function () {
+        game = new model.Juego();
         usr1 = {
             name: "Testing1",
             email: "Testing1@test.com",
@@ -63,6 +64,38 @@ describe("The game...", function () {
         var fightPlace = game.getFightPlace("place-0");
         expect(fightPlace.player1).toEqual(jasmine.any(model.Player));
         expect(fightPlace.player2).toEqual(jasmine.any(model.Player));
+    });
+
+    it("moves the fighters", function() {
+        var fightPlace = game.getFightPlace("place-0");
+
+        game.moveFighter("Testing1", "yopuka", {x: 4, y: 0}, "place-0");
+        game.moveFighter("Testing2", "sacrogito", {x: 9, y: 9}, "place-0");
+
+        var player = fightPlace.getPlayer("Testing1");
+        var enemy = fightPlace.getPlayer("Testing2");
+
+        expect(player.fighters[0].x).toEqual(4);
+        expect(player.fighters[0].y).toEqual(0);
+
+        expect(enemy.fighters[0].x).toEqual(9);
+        expect(enemy.fighters[0].y).toEqual(9);
+    });
+
+    it("attacks the fighters", function() {
+        var fightPlace = game.getFightPlace("place-0");
+
+        game.moveFighter("Testing1", "yopuka", {x: 5, y: 5}, "place-0");
+        game.moveFighter("Testing2", "sacrogito", {x: 5, y: 6}, "place-0");
+
+        var player = fightPlace.getPlayer("Testing1");
+        var enemy = fightPlace.getEnemy("Testing1");
+        var previousLife = enemy.fighters[0].life;
+        var damage = player.fighters[0].damage;
+
+        game.attackFighter("Testing1", "yopuka", {x: 5, y: 6}, "place-0");
+
+        expect(enemy.fighters[0].life).toEqual(previousLife - damage);
     });
 
     describe("The Fight Place...", function() {

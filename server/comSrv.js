@@ -52,13 +52,15 @@ function ComSrv() {
             socket.on('moveFighter', function(playerName, fighterName, movement, fightPlaceID) {
                 juego.moveFighter(playerName, fighterName, movement, fightPlaceID);
                 var currentFightPlace = juego.getFightPlace(fightPlaceID);
-                cli.sendToFightPlace(io, fightPlaceID, "update", currentFightPlace);
+                var data = {currentFightPlace: currentFightPlace, change: {}}
+                cli.sendToFightPlace(io, fightPlaceID, "update", data);
             });
 
             socket.on('attackFighter', function(playerName, fighterName, objectivePos, fightPlaceID) {
-                juego.attackFighter(playerName, fighterName, objectivePos, fightPlaceID);
+                var change = juego.attackFighter(playerName, fighterName, objectivePos, fightPlaceID);
                 var currentFightPlace = juego.getFightPlace(fightPlaceID);
-                cli.sendToFightPlace(io, fightPlaceID, "update", currentFightPlace);
+                var data = {currentFightPlace: currentFightPlace, change: change}
+                cli.sendToFightPlace(io, fightPlaceID, "update", data);
             })
 
             socket.on('updateUsersOnline', function(email, friends) {

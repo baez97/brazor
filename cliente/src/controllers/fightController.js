@@ -25,18 +25,31 @@ function paintFighters() {
 
     playerFighters.forEach( (fighter) => {
         $(`.${player.name}.${fighter.name}`).removeClass(`icon ${fighter.name}`);
-        console.log(`.${player.name}.${fighter.name} is removed`);
-        $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + player.name);
-        $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `selectFighter("${fighter.name}")`);
-        $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).text(`${fighter.life}-${fighter.damage}`)
+        if ( !fighter.dead ) {
+            $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + player.name);
+            $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `selectFighter("${fighter.name}")`);
+            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`💙 ${fighter.life} &nbsp 🥊 ${fighter.damage}`);
+        }
     });
 
     enemyFighters.forEach( (fighter) => {
         $(`.${enemy.name}.${fighter.name}`).removeClass(`icon ${fighter.name}`);
-        $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + enemy.name);
-        $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", "hideMovement()");
-        $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).text(`${fighter.life}-${fighter.damage}`)        
+        if ( !fighter.dead ) {
+            $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + enemy.name);
+            $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", "hideMovement()");
+            $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`❤️ ${fighter.life} &nbsp 🥊 ${fighter.damage}`);      
+        }
     });
+
+    if ( change && Object.keys(change).length ) {
+        var { position, damage } = change;
+        if ( damage <= 0 ) {
+            $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+        } else {
+            $(`#C-${position.x}-${position.y}`).append(`<div class='heal'>+${damage}</div>`);
+        }
+        change = 0;
+    }
 }
 
 function selectFighter(fighterName) {
@@ -53,7 +66,7 @@ function selectFighter(fighterName) {
 
 function reselectFighter(fighterName) {
     var fighter = getFighter(fighterName);
-    var attacks = getReachable(fighter, 4);
+    var attacks = getReachable(fighter, fighter.reach);
     hideMovement();
     attacks.forEach ( attack => {
         if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
@@ -66,7 +79,6 @@ function reselectFighter(fighterName) {
 }
 
 function getFighter(fighterName) {
-    console.log("GETTING THE FIGHTER");
     if ( fightPlace.player1.name == player.name ) { player = fightPlace.player1 }
     else { player = fightPlace.player2 }
     return player.fighters.find((fighter) => { 
@@ -80,6 +92,7 @@ function getReachable(fighter, reach) {
     var reachableCells = [];
     for ( let i = 0; i <= reach; i++ ) {
         for ( let j = 0; j < reach-i; j++ ) {
+            if ( i == 0 && j == 0 ) continue;
             reachableCells.push({ x: x +j, y: y +i });
             if ( j != 0 ) reachableCells.push({ x: x -j, y: y +i }); 
             if ( i != 0 ) reachableCells.push({ x: x +j, y: y -i }); 
@@ -90,7 +103,6 @@ function getReachable(fighter, reach) {
 }
 
 function moveFighter(fighterName, x, y) {
-    console.log("MOVING FIGHTER " + fighterName + " " + x + "-" + y);
     com.moveFighter(fighterName, {x: x, y: y});
 }
 
@@ -127,14 +139,19 @@ function getFightPlace() {
 }
 
 function hideMovement() {
-    console.log("SORRY, I'M HIDDING");
     $(".green").attr("onclick", "hideMovement()");
     $(".green").removeClass("green");
     $(".blue").attr("onclick", "hideMovement()");
     $(".blue").removeClass("blue");
     $(".reached").attr("onclick", "hideMovement()");
     $(".reached").removeClass("reached");
+    $(".damage").fadeOut(1700);
+    $(".heal").fadeOut(1700);
     paintFighters();
+}
+
+function addChange(c) {
+    change = c;
 }
 
 // function paintMovement(fighter) {
@@ -173,6 +190,7 @@ var com          = new FightCom();
 var player       = JSON.parse(localStorage.player);
 var enemy        = JSON.parse(localStorage.enemy);
 var fightPlaceID = JSON.parse(localStorage.fightPlaceID);
+var change       = 0;
 
 var fightPlace;
 

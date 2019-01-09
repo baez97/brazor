@@ -32,7 +32,7 @@ function confirmSelection() {
         name: selected,
         damage: firstFighter.damage,
         life: firstFighter.life,
-        reach: fighter.reach
+        reach: firstFighter.reach
     })
 
     localStorage.removeItem("user-to-sign");

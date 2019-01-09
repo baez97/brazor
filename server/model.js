@@ -133,29 +133,12 @@ class Juego {
     
     moveFighter(playerName, fighterName, movement, fightPlaceID) {
         var fightPlace = this.getFightPlace(fightPlaceID);
-        var player = fightPlace.getPlayer(playerName);
-        var fighter = player.getFighter(fighterName);
-
-        if ( movement.x >= 0 && movement.x <= 13 ) {
-            if ( movement.y >= 0 && movement.y <= 9 ) {
-                fighter.x = movement.x;
-                fighter.y = movement.y;
-            }
-        }
+        fightPlace.moveFighter(playerName, fighterName, movement);
     }
 
     attackFighter(playerName, fighterName, objectivePos, fightPlaceID) {
         var fightPlace = this.getFightPlace(fightPlaceID);
-
-        var player = fightPlace.getPlayer(playerName);
-        var fighter = player.getFighter(fighterName);
-
-        var enemy = fightPlace.getEnemy(playerName);
-        var objectiveFighter = enemy.getFighterAtPos(objectivePos);
-
-        if ( objectiveFighter ) {
-            objectiveFighter.life -= fighter.damage;
-        }
+        return fightPlace.attackFighter(playerName, fighterName, objectivePos)
     }
 }
 
@@ -169,19 +152,26 @@ class FightPlace {
 
     initFighters() {
         var i = 3;
+        var newFighters1 = [];
+        var newFighters2 = [];
         this.player1.fighters.forEach( (fighter) => {
             fighter.x = i;
             fighter.y = 0;
-            fighter = new Fighter(fighter);
+            newFighters1.push(new Fighter(fighter, this.player1.killFighter));
             i--;
         });
+        this.player1.fighters = newFighters1;
+
         i = 10;
+        newFighters2 = [];
         this.player2.fighters.forEach( (fighter) => {
             fighter.x = i;
             fighter.y = 9;
-            fighter = new Fighter(fighter);
+            fighter.player = this.player2;
+            newFighters2.push(new Fighter(fighter, this.player2.killFighter));            
             i++;
         });
+        this.player2.fighters = newFighters2;
     }
 
     getPlayer(name) {
@@ -200,9 +190,24 @@ class FightPlace {
             return this.player2;
         }
     }
+
+    moveFighter(playerName, fighterName, movement) {
+        var player     = this.getPlayer(playerName);
+        player.moveFighter(fighterName, movement);
+    }
+
+    attackFighter(playerName, fighterName, objectivePos) {
+        console.log(arguments);
+        var player = this.getPlayer(playerName);
+        var enemy = this.getEnemy(playerName);
+        var objectiveFighter = enemy.getFighterAtPos(objectivePos);
+
+        return player.attackFighter(fighterName, enemy, objectivePos);
+    }
 }
 
 class Player {
+
     constructor(user) {
         this.name = user.name;
         this.email = user.email;
@@ -221,10 +226,26 @@ class Player {
                    fighter.y === position.y;
         })
     }
+
+    moveFighter(fighterName, movement) {
+        var fighter = this.getFighter(fighterName);
+        fighter.move(movement);
+    }
+
+    attackFighter(fighterName, enemy, objectivePos) {
+        var fighter = this.getFighter(fighterName);
+        return fighter.attack(enemy, objectivePos);
+    }
+
+    getAttackedFighter(objectivePos, damage) {
+        var self = this;
+        var fighter = this.getFighterAtPos(objectivePos);
+        fighter.getAttacked(damage);
+    }
 }
 
 class Fighter {
-    constructor(fighter) {
+    constructor(fighter, killFunction) {
         var {name, damage, life, x, y} = fighter;
         this.name = name;
         this.damage = damage;
@@ -232,6 +253,33 @@ class Fighter {
         this.x = x;
         this.y = y;
         this.reach = fighter.reach;
+        this.killFunction = killFunction;
+        this.dead = false;
+    }
+
+    move(movement) {
+        if ( movement.x >= 0 && movement.x <= 13 ) {
+            if ( movement.y >= 0 && movement.y <= 9 ) {
+                this.x = movement.x;
+                this.y = movement.y;        
+            }
+        }
+    }
+
+    attack(enemy, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                enemy.getAttackedFighter(objectivePos, this.damage);
+                return { position: objectivePos, damage: (this.damage*(-1)) };
+            }
+        }
+    }
+
+    getAttacked(damage) {
+        this.life -= damage;
+        if ( this.life <= 0 ) {
+            this.dead = true;
+        }
     }
 }
 
