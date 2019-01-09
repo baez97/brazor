@@ -31,7 +31,8 @@ function confirmSelection() {
     user.fighters.push({
         name: selected,
         damage: firstFighter.damage,
-        life: firstFighter.life
+        life: firstFighter.life,
+        reach: fighter.reach
     })
 
     localStorage.removeItem("user-to-sign");

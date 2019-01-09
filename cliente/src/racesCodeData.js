@@ -9,7 +9,8 @@ var races = {
             salud. Su impetuoso temperamento hace que sean unos 
             maravillosos paladinos.`,
         damage : 40,
-        life: 100
+        life: 100,
+        reach: 2
     },
     feca : {
         title: `El escudo de Feca`,
@@ -19,7 +20,8 @@ var races = {
             aventureros gracias a sus armaduras elementales 
             y a su capacidad para encajar los golpes.`,
         damage : 15,
-        life: 110
+        life: 110,
+        reach: 4
     },
     ocra : {
         title: `El alcance de Ocra`,
@@ -30,7 +32,8 @@ var races = {
             sus afilados proyectiles el orificio más minúsculo 
             que el enemigo deje sin vigilancia.`,
         damage : 30,
-        life: 70
+        life: 70,
+        reach: 8
     },
     aniripsa : {
         title: `Las manos de Aniripsa`,
@@ -42,7 +45,8 @@ var races = {
             en expertos del verbo y exploradores de idiomas 
             olvidados..`,
         damage : 20,
-        life: 80
+        life: 80,
+        reach: 4
     },
     timador: {
         title: `La astucia de los Timadores`,
@@ -52,7 +56,8 @@ var races = {
             como nadie y, cuando se trata de hacer explotar a sus 
             enemigos, no se hacen de rogar. `,
         damage: 35,
-        life: 70
+        life: 70,
+        reach: 3
     }, 
     osamodas: {
         title: `El látigo de Osamodas`,
@@ -63,7 +68,8 @@ var races = {
             de sus enemigos, pero a ver quién se atreve a preguntarles 
             cara a cara si es cierto.`,
         damage: 35,
-        life: 80
+        life: 80,
+        reach: 2
     },
     sadida: {
         title: `El zapato de Sadida`,
@@ -73,7 +79,8 @@ var races = {
             amaestrar las zarzas para convertirlas en armas aterradoras, 
             y confeccionar muñecas de guerra y de curación.`,
         damage: 30,
-        life: 85
+        life: 85,
+        reach: 3
     },
     sacrogito: {
         title: `La sangre de Sacrógito`,
@@ -84,7 +91,8 @@ var races = {
             combate! El sacrógrito es el compañero ideal para pasar tus 
             largas noches luchando...`,
         damage: 10,
-        life: 200
+        life: 200,
+        reach: 2
     }
 }
 
@@ -101,12 +109,14 @@ var selected = 'yopuka';
 //         {   
 //             name: 'sacrogito', 
 //             damage: 40,
-//             life: 200
+//             life: 200,
+reach: 2
 //         },
 //         {   
 //             name: 'yopuka',
 //             damage: 30,
-//             life: 50
+//             life: 50,
+reach: 2
 //         }
 //     ],
 //     selected: 'sacrogito'

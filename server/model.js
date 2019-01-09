@@ -124,7 +124,6 @@ class Juego {
 
             var newPlace = new FightPlace(player1, player2, id);
             this.fightPlaces.push(newPlace);
-            console.log("partida creada! " + id);
         }
     }
 
@@ -173,12 +172,14 @@ class FightPlace {
         this.player1.fighters.forEach( (fighter) => {
             fighter.x = i;
             fighter.y = 0;
+            fighter = new Fighter(fighter);
             i--;
         });
         i = 10;
         this.player2.fighters.forEach( (fighter) => {
             fighter.x = i;
             fighter.y = 9;
+            fighter = new Fighter(fighter);
             i++;
         });
     }
@@ -222,4 +223,19 @@ class Player {
     }
 }
 
+class Fighter {
+    constructor(fighter) {
+        var {name, damage, life, x, y} = fighter;
+        this.name = name;
+        this.damage = damage;
+        this.life = life;
+        this.x = x;
+        this.y = y;
+        this.reach = fighter.reach;
+    }
+}
+
 module.exports.Juego = Juego;
+module.exports.FightPlace = FightPlace;
+module.exports.Player = Player;
+module.exports.Fighter = Fighter;
