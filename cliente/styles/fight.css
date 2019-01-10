@@ -108,13 +108,28 @@ td, tr {
 .osamodas {
     background-image: url(../img/icons/osamodas.png);
 }
+.oso {
+    background-image: url(../img/icons/oso.png);
+}
+.tofu {
+    background-image: url(../img/icons/tofu.png);
+}
+.jalato {
+    background-image: url(../img/icons/jalato.png);
+}
 
 .green {
     background-color: green;
+    cursor: pointer;
+}
+
+.green:hover {
+    background-color: rgb(53, 160, 53);
 }
 
 .blue {
     background-color: blue;
+    cursor: pointer;
 }
 
 .blue:hover{

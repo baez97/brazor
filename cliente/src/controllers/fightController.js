@@ -57,14 +57,20 @@ function paintFighters() {
         $("#turn-button").attr("onclick", "hideMovement()");
     }
 
+    console.log(change);
+
     if ( change && Object.keys(change).length ) {
         var position = change.position;
         var damage   = change.damage;
         var heal     = change.heal;
 
-        $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+        if ($(`#C-${position.x}-${position.y}`).hasClass("feca")) {
+            damage = Math.floor(damage/2);
+            $(`#C-${position.x}-${position.y}`).append(`<div class='damage' style="color: orange">${damage}</div>`);
+        } else {
+            $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+        }
         
-        console.log(heal);
         if ( heal != undefined ) {
             $(`#C-${heal.position.x}-${heal.position.y}`).append(`<div class='heal'>+${heal.damage}</div>`);
         }
@@ -98,6 +104,7 @@ function reselectFighter(fighterName) {
             var cell = $(`#C-${attack.x}-${attack.y}`);
             if ( ! cell.hasClass("icon") ) {
                 cell.addClass("blue");
+                cell.attr("onclick", `attackFighter("${fighterName}", ${attack.x}, ${attack.y})`);
             } else {
                 cell.addClass("reached");
                 if ( cell.hasClass(enemy.name) ) {
