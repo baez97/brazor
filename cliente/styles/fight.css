@@ -117,6 +117,10 @@ td, tr {
     background-color: blue;
 }
 
+.blue:hover{
+    background-color: red;
+}
+
 .light-blue {
     background-color: rgb(43, 170, 255);
 }

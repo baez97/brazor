@@ -63,6 +63,13 @@ function ComSrv() {
                 cli.sendToFightPlace(io, fightPlaceID, "update", data);
             });
 
+            socket.on('attackOwnFighter', function(playerName, fighterName, objectivePos, fightPlaceID) {
+                var change = juego.attackOwnFighter(playerName, fighterName, objectivePos, fightPlaceID);
+                var currentFightPlace = juego.getFightPlace(fightPlaceID);
+                var data = {currentFightPlace: currentFightPlace, change: change}
+                cli.sendToFightPlace(io, fightPlaceID, "update", data);
+            });
+
             socket.on('spendTurn', function(playerName, fightPlaceID) {
                 juego.spendTurn(playerName, fightPlaceID);
                 var currentFightPlace = juego.getFightPlace(fightPlaceID);

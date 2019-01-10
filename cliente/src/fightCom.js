@@ -25,6 +25,10 @@ function FightCom() {
     this.attackFighter = function(fighterName, objectivePos) {
         this.socket.emit('attackFighter', this.player.name, fighterName, objectivePos, this.fightPlaceID);
     }
+
+    this.attackOwnFighter = function(fighterName, objectivePos) {
+        this.socket.emit('attackOwnFighter', this.player.name, fighterName, objectivePos, this.fightPlaceID);
+    }
     
     this.spendTurn = function() {
         this.socket.emit('spendTurn', this.player.name, this.fightPlaceID);
@@ -63,31 +67,6 @@ function FightCom() {
         cli.socket.on("update", function(data) {
             addChange(data.change);
             updateDisplay(data.currentFightPlace);
-        })
-
-        cli.socket.on('updateUsersOnline', function() {
-            fillFriends();
-        });
-
-        cli.socket.on('challenge', function(challenger) {
-            showReceiveChallenge(challenger);
-        });
-
-        cli.socket.on('acceptChallenge', function(challenger) {
-            showAlert(`${challenger.name} ha aceptado tu desafío`);
-        });
-
-        cli.socket.on('goToFight', function(data) {
-            var { challenged, challenger, fightPlaceID } = data;
-
-            if ( challenged.email === user.email ) {
-                localStorage.setItem("player", JSON.stringify(challenged));
-                localStorage.setItem("enemy", JSON.stringify(challenger));
-            } else {
-                localStorage.setItem("player", JSON.stringify(challenger));
-                localStorage.setItem("enemy", JSON.stringify(challenged));
-            }
-            location.href = "/fight";
         });
     }
 }

@@ -159,6 +159,15 @@ class Juego {
 
         return change;
     }
+    
+    attackOwnFighter(playerName, fighterName, objectivePos, fightPlaceID) {
+        var fightPlace = this.getFightPlace(fightPlaceID);
+        var change = fightPlace.attackOwnFighter(playerName, fighterName, objectivePos);
+
+        change.end = this.isTheEnd(fightPlaceID); 
+
+        return change;
+    }
 
     spendTurn(playerName, fightPlaceID) {
         var fightPlace = this.getFightPlace(fightPlaceID);
@@ -219,10 +228,12 @@ class FightPlace {
         this.player2 = player2;
         this.player1.isYourTurn();
         this.id = id;
+        this.parlor = new Parlor();
         this.initFighters();
     }
 
     initFighters() {
+        var self = this;
         var i = 3;
         var newFighters1 = [];
         var newFighters2 = [];
@@ -230,7 +241,13 @@ class FightPlace {
             fighter.x = i;
             fighter.y = 0;
             fighter.movementPoints = 6;
-            newFighters1.push(new Fighter(fighter, this.player1.killFighter));
+            if ( fighter.name == "aniripsa" ) {
+                newFighters1.push(self.parlor["aniripsa"](fighter));
+            } else if (fighter.name == "sacrogito") {
+                newFighters1.push(self.parlor["sacrogito"](fighter));
+            } else {
+                newFighters1.push(new Fighter(fighter));
+            }
             i--;
         });
         this.player1.fighters = newFighters1;
@@ -242,7 +259,13 @@ class FightPlace {
             fighter.y = 9;
             fighter.player = this.player2;
             fighter.movementPoints = 6;
-            newFighters2.push(new Fighter(fighter, this.player2.killFighter));            
+            if ( fighter.name == "aniripsa" ) {
+                newFighters2.push(self.parlor["aniripsa"](fighter));
+            } else if (fighter.name == "sacrogito") {
+                newFighters2.push(self.parlor["sacrogito"](fighter));
+            } else {
+                newFighters2.push(new Fighter(fighter));
+            }          
             i++;
         });
         this.player2.fighters = newFighters2;
@@ -275,6 +298,12 @@ class FightPlace {
         var enemy = this.getEnemy(playerName);
 
         return player.attackFighter(fighterName, enemy, objectivePos);
+    }
+
+    attackOwnFighter(playerName, fighterName, objectivePos) {
+        var player = this.getPlayer(playerName);
+
+        return player.attackOwnFighter(fighterName, player, objectivePos);
     }
 
     spendTurn(playerName) {
@@ -312,9 +341,11 @@ class Player {
     }
 
     getFighterAtPos(position) {
+        console.log(this.name);
+        console.log(position);
         return this.fighters.find( (fighter) => {
-            return fighter.x === position.x && 
-                   fighter.y === position.y;
+            return fighter.x == position.x && 
+                   fighter.y == position.y;
         })
     }
 
@@ -324,12 +355,18 @@ class Player {
     }
 
     attackFighter(fighterName, enemy, objectivePos) {
+        console.log("Attacking!");
         var fighter = this.getFighter(fighterName);
         return fighter.attack(enemy, objectivePos);
     }
+    
+    attackOwnFighter(fighterName, myself, objectivePos) {
+        console.log("Attacking! own");
+        var fighter = this.getFighter(fighterName);
+        return fighter.attackOwn(myself, objectivePos);
+    }
 
     getAttackedFighter(objectivePos, damage) {
-        var self = this;
         var fighter = this.getFighterAtPos(objectivePos);
         fighter.getAttacked(damage);
     }
@@ -400,6 +437,19 @@ class Fighter {
         return {};
     }
 
+    attackOwn(player, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    this.hasAttacked = true;
+                    player.getAttackedFighter(objectivePos, this.damage);
+                    return { position: objectivePos, damage: (this.damage*(-1)) };
+                } 
+            }
+        }
+        return {};
+    }
+
     getAttacked(damage) {
         this.life -= damage;
         if ( this.life <= 0 ) {
@@ -412,6 +462,86 @@ class Fighter {
         this.hasAttacked = false;
     }
 }
+
+class Parlor {
+    aniripsa(fighter) {
+        return new Aniripsa(fighter);
+    }
+    // yopuka() {
+    //     return new Yopuka();
+    // }
+    // ocra() {
+    //     return new Ocra();
+    // }
+    // timador() {
+    //     return new Timador();
+    // }
+    // sadida() {
+    //     return new Sadida();
+    // }
+    // osamodas() {
+    //     return new Osamodas();
+    // }
+    sacrogito(fighter) {
+        return new Sacrogito(fighter);
+    }
+    // feca() {
+    //     return new Feca();
+    // }
+}
+
+class Aniripsa extends Fighter {
+    constructor(fighter) {
+        super(fighter);
+    }
+    
+    attack(enemy, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    this.hasAttacked = true;
+                    enemy.getAttackedFighter(objectivePos, this.damage);
+                    var change = { position: objectivePos, damage: (this.damage*(-1)) };
+                    this.life += 30;
+                    change.heal = { position: {x: this.x, y: this.y}, damage: this.damage };
+                    return change;
+                } 
+            }
+        }
+        return {};
+    }
+
+    attackOwn(player, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    this.hasAttacked = true;
+                    player.getAttackedFighter(objectivePos, (this.damage)*(-1));
+                    var change = { position: {x: -1, y: -1}, damage: 0 };
+                    this.life += 30;
+                    change.heal = { position: {x: objectivePos.x, y: objectivePos.y}, damage: this.damage };
+                    return change;
+                } 
+            }
+        }
+        return {};
+    }
+}
+
+class Sacrogito extends Fighter {
+    constructor(fighter) {
+        super(fighter);
+    }
+    
+    getAttacked(damage) {
+        this.life -= damage;
+        this.damage += Math.floor(damage/2);
+        if ( this.life <= 0 ) {
+            this.dead = true;
+        }
+    }
+}
+
 
 module.exports.Juego = Juego;
 module.exports.FightPlace = FightPlace;

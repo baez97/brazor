@@ -60,11 +60,13 @@ function paintFighters() {
     if ( change && Object.keys(change).length ) {
         var position = change.position;
         var damage   = change.damage;
+        var heal     = change.heal;
 
-        if ( damage <= 0 ) {
-            $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
-        } else {
-            $(`#C-${position.x}-${position.y}`).append(`<div class='heal'>+${damage}</div>`);
+        $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+        
+        console.log(heal);
+        if ( heal != undefined ) {
+            $(`#C-${heal.position.x}-${heal.position.y}`).append(`<div class='heal'>+${heal.damage}</div>`);
         }
         
         if ( change.end != undefined ) {
@@ -93,17 +95,23 @@ function reselectFighter(fighterName) {
     hideMovement();
     if ( ! fighter.hasAttacked ) {
         attacks.forEach ( attack => {
-            if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
-                $(`#C-${attack.x}-${attack.y}`).addClass("blue");
+            var cell = $(`#C-${attack.x}-${attack.y}`);
+            if ( ! cell.hasClass("icon") ) {
+                cell.addClass("blue");
             } else {
-                $(`#C-${attack.x}-${attack.y}`).addClass("reached");
-                $(`#C-${attack.x}-${attack.y}`).attr("onclick", `attackFighter("${fighterName}", ${attack.x}, ${attack.y})`);
+                cell.addClass("reached");
+                if ( cell.hasClass(enemy.name) ) {
+                    cell.attr("onclick", `attackFighter("${fighterName}", ${attack.x}, ${attack.y})`);
+                } else {
+                    cell.attr("onclick", `attackOwnFighter("${fighterName}", ${attack.x}, ${attack.y})`);
+                }
             }
         });
     } else {
         attacks.forEach ( attack => {
-            if ( ! $(`#C-${attack.x}-${attack.y}`).hasClass("icon") ) {
-                $(`#C-${attack.x}-${attack.y}`).addClass("light-blue");
+            var cell = $(`#C-${attack.x}-${attack.y}`);
+            if ( ! cell.hasClass("icon") ) {
+                cell.addClass("light-blue");
             } 
         });
     }
@@ -138,8 +146,11 @@ function moveFighter(fighterName, x, y) {
 }
 
 function attackFighter(fighterName, x, y) {
-    console.log("ATTACKING FIGHTER " + fighterName + " " + x + "-" + y);
     com.attackFighter(fighterName, {x: x, y: y});
+}
+
+function attackOwnFighter(fighterName, x, y) {
+    com.attackOwnFighter(fighterName, {x: x, y: y});
 }
 
 
