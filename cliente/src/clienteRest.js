@@ -24,15 +24,17 @@ function ClienteRest() {
         })
     },
 
-    this.onlineUser = function (email, password, errorHandler, callback) {
+    this.onlineUser =  function (email, password, errorHandler, callback) {
         $.ajax({
             type: 'POST',
             url: '/loginUser/',
             data: JSON.stringify({email: email, password: password}),
             success: function(data) {
-                if ( data == undefined ) {
-                    errorHandler("No se ha podido iniciar sesión");
+                if ( data.error != undefined ) {
+                    errorHandler("Email o contraseña incorrectos");
                 } else {
+                    data.password = password;
+                    localStorage.setItem("user", JSON.stringify(data));
                     callback(data);
                 }
             },

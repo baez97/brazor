@@ -53,6 +53,9 @@ function ClienteCom() {
             }
 
             localStorage.setItem("fightPlaceID", JSON.stringify(fightPlaceID));
+            localStorage.setItem("oldFightersNumber", user.fighters.length);
+            
+            localStorage.setItem("fightPlaceID", JSON.stringify(fightPlaceID));
             location.href = "/fight";
         });
     }

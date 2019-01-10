@@ -205,44 +205,12 @@ function fightIsOver(loserName) {
 
 function showAlert(message) {
     $(document).ready( function() {
-        $("#alert-container").removeClass("hidden");
+        $("#alert-fluid-container").removeClass("hidden");
         $("#alert-background").removeClass("hidden");
         $(".alert-title").text(message);
         $("#alertButton").attr("onclick", "location.href='/main'");
     })
 }
-
-// function paintMovement(fighter) {
-//     var movements = getReachable(fighter.x, fighter.y, 4);
-//     movements.forEach( (movement) => {
-//         $(`#C-${movement.x}-${movement.y}`).addClass("green");
-//         $(`#C-${movement.x}-${movement.y}`).click(function(e) {
-//             moveFighter(fighter, movement);
-//         });
-//     });
-// }
-
-// function paintAttack(fighter) {
-//     var attacks = getReachable(fighter.x, fighter.y, 3);
-//     attacks.forEach( (attack) => {
-//         $(`#C-${attack.x}-${attack.y}`).addClass("blue");
-//         $(`#C-${attack.x}-${attack.y}`).click(function(e) {
-//             console.log("Atacando a la celda " + attack.x);
-//         });
-//     });
-// }
-
-// function moveFighter(fighter, movement) {
-//     $(`#C-${fighter.x}-${fighter.y}`).removeClass(`icon ${fighter.name}`);
-//     com.moveFighter(fighter.name, movement);
-//     fighter.x = movement.x;
-//     fighter.y = movement.y;
-//     paintFighters();
-// }
-
-
-
-
 
 var com          = new FightCom();
 var player       = JSON.parse(localStorage.player);

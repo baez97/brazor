@@ -1,4 +1,5 @@
-var url      = "mongodb://baez97:myPassword1234@ds247061.mlab.com:47061/brazor"
+var url      = "mongodb://baez97:myPassword1234@ds247061.mlab.com:47061/brazor";
+var races    = require('./racesCodeData.js');
 var mongo    = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 
@@ -98,6 +99,39 @@ function Dao() {
                 callback(result);
             }
         })
+    }
+
+    this.addFighter = function(player, fighterName, callback) {
+        var fighter = races.races[fighterName];
+
+        var newFighter = {
+            name: fighterName,
+            damage: fighter.damage,
+            life: fighter.life,
+            reach: fighter.reach
+        }
+
+        this.users.findOneAndUpdate({email: player.email}, 
+            { $push: {fighters: newFighter}}, function( err, result ) {
+            if ( err ) {
+                console.log(err);
+                callback(undefined);
+            } else {
+                callback(result);
+            }
+        });
+    }
+
+    this.earnExperience = function(player, callback) {
+        this.users.findOneAndUpdate({email: player.email},
+            {$inc: {experience: 10, diplomas: 1}}, function( err, result ) {
+            if ( err ) {
+                console.log(err);
+                callback(undefined);
+            } else {
+                callback(result);
+            }
+        });
     }
 
     this.edit = function(collection, data, callback) {

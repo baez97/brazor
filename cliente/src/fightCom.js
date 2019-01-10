@@ -18,10 +18,6 @@ function FightCom() {
         this.fightPlaceID = fightPlaceID;
     }
 
-    this.getFightPlace = function(fightPlaceID) {
-        this.socket.emit('')
-    }
-
     this.moveFighter = function(fighterName, movement) {
         this.socket.emit('moveFighter', this.player.name, fighterName, movement, this.fightPlaceID);
     }
@@ -93,6 +89,7 @@ function FightCom() {
             }
 
             localStorage.setItem("fightPlaceID", JSON.stringify(fightPlaceID));
+            localStorage.setItem("oldFightersNumber", user.fighters.length);
             location.href = "/fight";
         });
     }

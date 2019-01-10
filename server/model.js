@@ -155,25 +155,38 @@ class Juego {
     }
 
     isTheEnd(fightPlaceID) {
+        var self = this;
         var fightPlace = this.getFightPlace(fightPlaceID);
-        return fightPlace.isTheEnd();
+        var deadPlayerName = fightPlace.isTheEnd();
+
+        if (deadPlayerName) {
+            var winner = fightPlace.getEnemy(deadPlayerName);
+            this.unlockFighter(winner, function() {
+                self.dao.earnExperience(winner, function() {
+                    return deadPlayerName;
+                })
+            });
+        }
+
+        return deadPlayerName;
     }
 
     unlockFighter(user, callback) {
         if ( user.fighters.length >= 4 ) {
-            callback(false);
+            callback();
         } else {
             var newFighter = user.fighters[0].name;
-            while ( this.userHasFighter(user, newFighter) ) {
+            while ( this.userHasFighter( user, newFighter ) ) {
                 newFighter = this.getRandomFighter();
             }
-            callback(newFighter);
+            this.dao.addFighter(user, newFighter, function() {
+                callback();
+            });
         }
     }
 
     getRandomFighter() {
         let randomIndex = Math.floor(Math.random()*this.races.length);
-        console.log(this.races[randomIndex]);
         return this.races[randomIndex];
     }
 

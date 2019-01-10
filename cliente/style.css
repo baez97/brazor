@@ -3,7 +3,7 @@
 .masthead {
     height: 60vh;
     min-height: 20px;
-    background-image: url(img/backk.png);
+    background-image: url(img/back.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -101,7 +101,7 @@
 }
 
 #intro {
-    background: url(img/back-swords-copia.png) top center no-repeat transparent;
+    background: url(img/back-lower.png) top center no-repeat transparent;
     background-size: 100% auto;
     color: rgb(230, 230, 230);
     max-width: 815px;

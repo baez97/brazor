@@ -280,3 +280,7 @@ td .tooltiptext {
     text-align: center;
     color: white;
 }
+
+.hidden {
+    visibility: hidden;
+}

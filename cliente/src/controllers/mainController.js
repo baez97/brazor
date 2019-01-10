@@ -15,7 +15,6 @@ function selectLocked() {
     showError("<h1>Luchador bloqueado</h1>");
 }
 
-user = user;
 
 function fillData() {
     fillName();
@@ -174,11 +173,10 @@ function isEmail(email) {
     return regex.test(email);
 }
 
-function unlockFighter() {
-    rest.unlockFighter(user, function(data) {
-        showAlert("¡Has desbloqueado un luevo luchador! \n" + data.newFighter);
-        localStorage.removeItem("hasWonAFight");
-    });
+function hasUnlockedFighter() {
+    showAlert("¡Has desbloqueado un nuevo luchador! \n " + 
+        user.fighters[user.fighters.length-1].name);
+    localStorage.removeItem("hasWonAFight");
 }
 
 var user;
@@ -191,21 +189,20 @@ if ( !localStorage.user ) {
     user = JSON.parse(localStorage.getItem("user"));
     localStorage.removeItem("loggedOut");
 
-    if ( localStorage.hasWonAFight != undefined ) {
-        showAlert("Has ganado 15 puntos de experiencia");
-        unlockFighter();
-    }
-
     rest.onlineUser(user.email, user.password, showError, function(data) {
         if ( data ) {
             user = JSON.parse(localStorage.getItem("user"));
+            com.ini(user);
+            fillData();
+            com.updateUsersOnline(user.email, user.friends);
+            if ( localStorage.hasWonAFight != undefined  && localStorage.oldFightersNumber < user.fighters.length) {
+                hasUnlockedFighter();
+            }
+        } else {
+            localStorage.removeItem("user");
+            location.href="/";
         }
     });
-
-    com.ini(user);
-    fillData();
-    com.updateUsersOnline(user.email, user.friends);
-
 }
 
 $(window).on("beforeunload", function() {
