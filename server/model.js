@@ -63,6 +63,17 @@ class Juego {
         })
     }
 
+    addFriendByName(user, name, callback) {
+        var self = this;
+        this.dao.findUser({name: name}, function(newFriend) {
+            if ( newFriend ) {
+                self.addFriends(user, newFriend, callback)
+            } else {
+                callback(undefined);
+            }
+        })
+    }
+
     addFriends(user1, user2, callback) {
         var self = this;
 
@@ -386,6 +397,7 @@ class Fighter {
                 } 
             }
         }
+        return {};
     }
 
     getAttacked(damage) {

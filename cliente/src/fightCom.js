@@ -87,9 +87,6 @@ function FightCom() {
                 localStorage.setItem("player", JSON.stringify(challenger));
                 localStorage.setItem("enemy", JSON.stringify(challenged));
             }
-
-            localStorage.setItem("fightPlaceID", JSON.stringify(fightPlaceID));
-            localStorage.setItem("oldFightersNumber", user.fighters.length);
             location.href = "/fight";
         });
     }
