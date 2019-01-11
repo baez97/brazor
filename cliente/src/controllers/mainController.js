@@ -123,13 +123,21 @@ function hideAlert() {
     })
 }
 
-function showAlert(message) {
+function showAlert(message, unlockedPlayer) {
     $(document).ready( function() {
+        $(".alert-player").text("");
         $("#alert-container").removeClass("hidden");
         $("#alert-background").removeClass("hidden");
         $(".alert-title").text(message);
         $("#alertButton").attr("onclick", "hideAlert()");
+        if ( unlockedPlayer ) {
+            $(".alert-player").text(firstCapital(unlockedPlayer));
+        }
     })
+}
+
+function firstCapital(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 function showReceiveChallenge(challenger) {
@@ -174,8 +182,7 @@ function isEmail(email) {
 }
 
 function hasUnlockedFighter() {
-    showAlert("¡Has desbloqueado un nuevo luchador! \n " + 
-        user.fighters[user.fighters.length-1].name);
+    showAlert("¡Has desbloqueado un nuevo luchador!", user.fighters[user.fighters.length-1].name);
     localStorage.removeItem("hasWonAFight");
 }
 

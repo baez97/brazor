@@ -7,7 +7,7 @@ function connectToSocket() {
 
 function setFightPlace(fP) {
     fightPlace = fP;
-    //hideMovement();
+    //clearAll();
     localStorage.setItem("fightPlace", JSON.stringify(fightPlace));
     paintFighters();
 }
@@ -33,7 +33,7 @@ function paintFighters() {
             if ( turn ) {
                 $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `selectFighter("${fighter.name}")`);
             } else {
-                $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `hideMovement()`);
+                $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `clearAll()`);
             }
         }
     });
@@ -42,7 +42,7 @@ function paintFighters() {
         $(`.${enemy.name}.${fighter.name}`).removeClass(`icon ${fighter.name}`);
         if ( !fighter.dead ) {
             $(`#C-${fighter.x}-${fighter.y}`).addClass("icon " + fighter.name + " " + enemy.name);
-            $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", "hideMovement()");
+            $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", "clearAll()");
             $(`#C-${fighter.x}-${fighter.y} .tooltiptext`).html(`❤️ ${fighter.life} &nbsp 🔥 ${fighter.damage}`);      
         }
     });
@@ -54,7 +54,7 @@ function paintFighters() {
     } else {
         $("#turn-button").removeClass("pass-turn-button");
         $("#turn-button").addClass("no-turn-button");
-        $("#turn-button").attr("onclick", "hideMovement()");
+        $("#turn-button").attr("onclick", "clearAll()");
     }
 
     console.log(change);
@@ -85,6 +85,7 @@ function paintFighters() {
 
 function selectFighter(fighterName) {
     var fighter = getFighter(fighterName);
+    clearAll();
     $(`#C-${fighter.x}-${fighter.y}`).attr("onclick", `reselectFighter("${fighter.name}")`);
     var movements = getReachable(fighter, fighter.movementPoints);
     movements.forEach ( movement => {
@@ -96,9 +97,10 @@ function selectFighter(fighterName) {
 }
 
 function reselectFighter(fighterName) {
+    clearAll();
     var fighter = getFighter(fighterName);
     var attacks = getReachable(fighter, fighter.reach);
-    hideMovement();
+    clearAll();
     if ( ! fighter.hasAttacked ) {
         attacks.forEach ( attack => {
             var cell = $(`#C-${attack.x}-${attack.y}`);
@@ -122,7 +124,6 @@ function reselectFighter(fighterName) {
             } 
         });
     }
-    
 }
 
 function getFighter(fighterName) {
@@ -163,7 +164,7 @@ function attackOwnFighter(fighterName, x, y) {
 
 function updateDisplay(fP) {
     setFightPlace(fP);
-    hideMovement();
+    clearAll();
     paintFighters();
 }
 
@@ -172,7 +173,7 @@ function generateArena() {
     for ( let i = 0; i < 10; i++ ) {
         chain+= "<tr>";
         for ( let j = 0; j < 14; j++ ) {
-            chain+= `<td id="C-${j}-${i}" onclick="hideMovement()">
+            chain+= `<td id="C-${j}-${i}" onclick="clearAll()">
                 <span class="tooltiptext">Tooltip text</span>
             </td>`
         }
@@ -187,18 +188,27 @@ function getFightPlace() {
     return f;
 }
 
-function hideMovement() {
-    $(".green").attr("onclick", "hideMovement()");
+function clearAll() {
+    $(".green").attr("onclick", "clearAll()");
     $(".green").removeClass("green");
-    $(".blue").attr("onclick", "hideMovement()");
+    $(".blue").attr("onclick", "clearAll()");
     $(".blue").removeClass("blue");
     $(".light-blue").removeClass("light-blue");
-    $(".reached").attr("onclick", "hideMovement()");
+    $(".reached").attr("onclick", "clearAll()");
     $(".reached").removeClass("reached");
     $(".damage").fadeOut(1700);
     $(".heal").fadeOut(1700);
     paintFighters();
 }
+
+// function clearMovement() {
+//     $(".green").attr("onclick", "clearAll()");
+//     $(".green").removeClass("green");
+// }
+
+// function clearAttack() {
+
+// }
 
 function addChange(c) {
     change = c;

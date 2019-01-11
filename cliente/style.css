@@ -7,7 +7,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-  }
+}
 
 #content {
     height: 80vh;
@@ -101,13 +101,17 @@
 }
 
 #intro {
-    background: url(img/back-lower.png) top center no-repeat transparent;
-    background-size: 100% auto;
+    background: url(img/back-swords.png) top center no-repeat transparent;
+    background-size: 100% 100%;
     color: rgb(230, 230, 230);
     max-width: 815px;
-    position: relative;
+    /* position: relative; */
     margin: auto;
-    height: 600px;
+    padding: 130px 160px;
+    padding-top: 200px;
+    text-align: center;
+    font-family: Birch;
+    font-size: 35px;
 }
 
 

@@ -21,6 +21,7 @@ button:focus {
 
 #profile {
     margin: auto;
+    height: 340px;
 }
 .selection-deck {
     margin-top: 20px;

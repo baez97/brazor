@@ -683,8 +683,8 @@ class Invocator extends Fighter {
 
     resetPoints() {
         this.movementPoints = 4;
-        this.latence--;
-        this.hasAttacked = this.latence == 0 ? false : true;
+        if ( this.latence > 0 ) this.latence--;
+        this.hasAttacked = this.latence <= 0 ? false : true;
     }
 }
 

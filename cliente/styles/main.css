@@ -144,7 +144,7 @@ button:focus {
 
 #profile {
     margin: auto;
-    max-height: 350px;
+    height: 340px;
 }
 
 
@@ -350,6 +350,13 @@ tr:nth-child(even) {
     font-family: Birch;
     text-align: center;
     color: white;
+}
+
+.alert-player {
+    font-family: Birch;
+    text-align: center;
+    color: yellowgreen;
+    font-size: 45px;
 }
 
 .play-button {
