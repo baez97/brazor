@@ -244,21 +244,8 @@ class FightPlace {
             fighter.x = i;
             fighter.y = 0;
             fighter.movementPoints = 6;
-            if ( fighter.name == "aniripsa" ) {
-                newFighters1.push(self.parlor["aniripsa"](fighter));
-            } else if (fighter.name == "sacrogito") {
-                newFighters1.push(self.parlor["sacrogito"](fighter));
-            } else if (fighter.name == "feca") {
-                newFighters1.push(self.parlor["feca"](fighter));
-            } else if (fighter.name == "osamodas") {
-                newFighters1.push(self.parlor["osamodas"](fighter));
-            } else if (fighter.name == "timador") {
-                newFighters1.push(self.parlor["timador"](fighter));
-            } else if (fighter.name == "sadida") {
-                newFighters1.push(self.parlor["sadida"](fighter));
-            } else {
-                newFighters1.push(new Fighter(fighter));
-            }
+            var newFighter = self.parlor[fighter.name](fighter);
+            newFighters1.push(newFighter)
             i--;
         });
         this.player1.fighters = newFighters1;
@@ -270,21 +257,8 @@ class FightPlace {
             fighter.y = 9;
             fighter.player = this.player2;
             fighter.movementPoints = 6;
-            if ( fighter.name == "aniripsa" ) {
-                newFighters2.push(self.parlor["aniripsa"](fighter));
-            } else if (fighter.name == "sacrogito") {
-                newFighters2.push(self.parlor["sacrogito"](fighter));
-            } else if (fighter.name == "feca") {
-                newFighters2.push(self.parlor["feca"](fighter));
-            } else if (fighter.name == "osamodas") {
-                newFighters2.push(self.parlor["osamodas"](fighter));
-            } else if (fighter.name == "timador") {
-                newFighters2.push(self.parlor["timador"](fighter));
-            } else if (fighter.name == "sadida") {
-                newFighters2.push(self.parlor["sadida"](fighter));
-            } else {
-                newFighters2.push(new Fighter(fighter));
-            }          
+            var newFighter = self.parlor[fighter.name](fighter);
+            newFighters2.push(newFighter)     
             i++;
         });
         this.player2.fighters = newFighters2;
@@ -535,12 +509,12 @@ class Parlor {
     aniripsa(fighter) {
         return new Aniripsa(fighter);
     }
-    // yopuka() {
-    //     return new Yopuka();
-    // }
-    // ocra() {
-    //     return new Ocra();
-    // }
+    yopuka(fighter) {
+        return new Fighter(fighter);
+    }
+    ocra(fighter) {
+        return new Fighter(fighter);
+    }
     timador(fighter) {
         return new Timador(fighter);
     }
