@@ -22,16 +22,12 @@
 
 <body>
     <script>
-        // else {
-        //     var localUsr = JSON.parse(localStorage.user);
-        //     if ( !localUsr.online ) {
-        //         console.log("Hola! veo que ya has estado por aquí...");
-        //         var email = localUsr.email;
-        //         var password = localUsr.password;
-        //         rest.loginUser(email, password, showError);
-        //     }
-        // }
-
+        // PRELOADING HOVER IMAGES
+        var playHover  = new Image();
+        var closeHover = new Image();
+        playHover.src  = url("img/btn-play1-over.png")
+        closeHover.src = url("../img/close-btn-over.png");
+        
         if ( localStorage.firstTime ) {
             showAlert("¡Bienvenido " + user.name + "! Añade a tus amigos para desafiarles");
             localStorage.removeItem("firstTime");

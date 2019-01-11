@@ -28,7 +28,7 @@ button:focus {
     box-shadow: inset 0 0 10px black;
     border-radius: 15px;
     border-collapse: collapse;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 td, tr {
@@ -117,6 +117,15 @@ td, tr {
 .jalato {
     background-image: url(../img/icons/jalato.png);
 }
+.bomb1 {
+    background-image: url(../img/icons/bomb1.png);
+}
+.bomb2 {
+    background-image: url(../img/icons/bomb2.png);
+}
+.bomb3 {
+    background-image: url(../img/icons/bomb3.png);
+}
 
 .green {
     background: #bfd255; /* Old browsers */
@@ -159,7 +168,11 @@ td, tr {
 }
 
 .reached {
-    background-color: blue
+    background-color: #3b679e;
+    background-color: -moz-linear-gradient(-45deg, #3b679e 0%, #2b88d9 50%, #207cca 51%, #7db9e8 100%); /* FF3.6-15 */
+    background-color: -webkit-linear-gradient(-45deg, #3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+    background-color: linear-gradient(135deg, #3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b679e', endColorstr='#7db9e8',GradientType=1 );
 }
 
 .reached:hover {

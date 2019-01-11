@@ -8,9 +8,9 @@ var races = {
             al menos una vez al día es para ellos señal de buena 
             salud. Su impetuoso temperamento hace que sean unos 
             maravillosos paladinos.`,
-        damage : 40,
+        damage : 50,
         life: 100,
-        reach: 2
+        reach: 3
     },
     feca : {
         title: `El escudo de Feca`,
@@ -20,7 +20,7 @@ var races = {
             aventureros gracias a sus armaduras elementales 
             y a su capacidad para encajar los golpes.`,
         damage : 15,
-        life: 110,
+        life: 100,
         reach: 4
     },
     ocra : {
@@ -45,7 +45,7 @@ var races = {
             en expertos del verbo y exploradores de idiomas 
             olvidados..`,
         damage : 20,
-        life: 80,
+        life: 70,
         reach: 4
     },
     timador: {
@@ -56,7 +56,7 @@ var races = {
             como nadie y, cuando se trata de hacer explotar a sus 
             enemigos, no se hacen de rogar. `,
         damage: 35,
-        life: 70,
+        life: 90,
         reach: 3
     }, 
     osamodas: {

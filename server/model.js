@@ -182,6 +182,9 @@ class Juego {
 
         if (deadPlayerName) {
             var winner = fightPlace.getEnemy(deadPlayerName);
+            winner.removeInvocations(); // Invocations can make the user not to unlock next 
+                                        // fighter because he already has 4 fighters (invocations
+                                        // count as fighter)
             this.unlockFighter(winner, function() {
                 self.dao.earnExperience(winner, function() {
                     return deadPlayerName;
@@ -250,6 +253,8 @@ class FightPlace {
                 newFighters1.push(self.parlor["feca"](fighter));
             } else if (fighter.name == "osamodas") {
                 newFighters1.push(self.parlor["osamodas"](fighter));
+            } else if (fighter.name == "timador") {
+                newFighters1.push(self.parlor["timador"](fighter));
             } else {
                 newFighters1.push(new Fighter(fighter));
             }
@@ -272,6 +277,8 @@ class FightPlace {
                 newFighters2.push(self.parlor["feca"](fighter));
             } else if (fighter.name == "osamodas") {
                 newFighters2.push(self.parlor["osamodas"](fighter));
+            } else if (fighter.name == "timador") {
+                newFighters2.push(self.parlor["timador"](fighter));
             } else {
                 newFighters2.push(new Fighter(fighter));
             }          
@@ -412,6 +419,12 @@ class Player {
     addInvocation(invocation) {
         this.fighters.push(invocation);
     }
+
+    removeInvocations() {
+        this.fighters = this.fighters.filter( (fighter) => {
+            return !fighter.isInvocation();
+        });
+    }
 }
 
 class Fighter {
@@ -482,6 +495,10 @@ class Fighter {
         this.movementPoints = 4;
         this.hasAttacked = false;
     }
+
+    isInvocation() {
+        return false;
+    }
 }
 
 class Parlor {
@@ -494,9 +511,9 @@ class Parlor {
     // ocra() {
     //     return new Ocra();
     // }
-    // timador() {
-    //     return new Timador();
-    // }
+    timador(fighter) {
+        return new Timador(fighter);
+    }
     // sadida() {
     //     return new Sadida();
     // }
@@ -518,6 +535,15 @@ class Parlor {
     jalato(position) {
         return new Jalato(position);
     }
+    bomb1(position) {
+        return new Bomb1(position);
+    }
+    bomb2(position) {
+        return new Bomb2(position);
+    }
+    bomb3(position) {
+        return new Bomb3(position);
+    }
 }
 
 class Aniripsa extends Fighter {
@@ -532,8 +558,8 @@ class Aniripsa extends Fighter {
                     this.hasAttacked = true;
                     enemy.getAttackedFighter(objectivePos, this.damage);
                     var change = { position: objectivePos, damage: (this.damage*(-1)) };
-                    this.life += 30;
-                    change.heal = { position: {x: this.x, y: this.y}, damage: this.damage };
+                    this.life += Math.floor(this.damage/2);
+                    change.heal = { position: {x: this.x, y: this.y}, damage: Math.floor(this.damage/2) };
                     return change;
                 } 
             }
@@ -589,7 +615,13 @@ class Feca extends Fighter {
     }
 }
 
-class Oso extends Fighter {
+class Invocation extends Fighter{
+    isInvocation() {
+        return true;
+    }
+}
+
+class Oso extends Invocation {
     constructor(position) {
         var fighter = {
             name : "oso",
@@ -609,7 +641,7 @@ class Oso extends Fighter {
     }
 }
 
-class Jalato extends Fighter {
+class Jalato extends Invocation {
     constructor(position) {
         var fighter = {
             name : "jalato",
@@ -629,7 +661,7 @@ class Jalato extends Fighter {
     }
 }
 
-class Tofu extends Fighter {
+class Tofu extends Invocation {
     constructor(position) {
         var fighter = {
             name : "tofu",
@@ -649,6 +681,103 @@ class Tofu extends Fighter {
     }
 }
 
+class Bomb extends Invocation {
+    attack(enemy, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    var change = enemy.getAttackedFighter(objectivePos, this.damage);
+                    if ( Object.keys(change).length ) {
+                        this.hasAttacked = true;
+                        this.life = 0;
+                        this.dead = true;
+                    }
+                    return change;
+                } 
+            }
+        }
+        return {};
+    }
+
+    attackOwn(player, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    this.hasAttacked = true;
+                    this.life = 0;
+                    this.dead = true;
+                    player.getAttackedFighter(objectivePos, this.damage);
+                    return { position: objectivePos, damage: (this.damage*(-1)) };
+                } 
+            }
+        }
+        return {};
+    }
+}
+
+class Bomb1 extends Bomb {
+    constructor(position) {
+        var fighter = {
+            name : "bomb1",
+            life : 20,
+            damage : 10,
+            reach : 2,
+            x : position.x,
+            y : position.y,
+            movementPoints: 1
+        }
+        super(fighter);
+    }
+
+    resetPoints() {
+        this.hasAttacked = false;
+        this.movementPoints = 1;
+        this.damage += 5;
+    }
+}
+
+class Bomb2 extends Bomb {
+    constructor(position) {
+        var fighter = {
+            name : "bomb2",
+            life : 30,
+            damage : 20,
+            reach : 2,
+            x : position.x,
+            y : position.y,
+            movementPoints: 1
+        }
+        super(fighter);
+    }
+
+    resetPoints() {
+        this.hasAttacked = false;
+        this.movementPoints = 1;
+        this.damage += 10;
+    }
+}
+
+class Bomb3 extends Bomb {
+    constructor(position) {
+        var fighter = {
+            name : "bomb3",
+            life : 50,
+            damage : 25,
+            reach : 2,
+            x : position.x,
+            y : position.y,
+            movementPoints: 1
+        }
+        super(fighter);
+    }
+
+    resetPoints() {
+        this.hasAttacked = false;
+        this.movementPoints = 1;
+        this.damage += 15;
+    }
+}
+
 
 class Invocator extends Fighter {
     constructor(fighter) {
@@ -661,17 +790,24 @@ class Invocator extends Fighter {
     attack(enemy, objectivePos) {
         if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
             if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
-                if ( ! this.hasAttacked && this.latence == 0 && this.cycle < this.invocations.length ) {
-                    if (enemy.getFighterAtPos(objectivePos) == undefined) {
+                if (enemy.getFighterAtPos(objectivePos) == undefined) {
+                    if ( ! this.hasAttacked && this.latence == 0 && this.cycle < this.invocations.length ) {
                         this.hasAttacked = true;
                         var change = { position: {x: -1, y: -1}, damage: 0 };
-                        this.latence = 3;
+                        this.latence = 2;
                         change.invocation = { position: { x: objectivePos.x, y: objectivePos.y }, 
                                               creature: this.invocations[this.cycle] };
                         this.cycle++;
                         return change;
                     }
-                } 
+                } else {
+                    if ( ! this.hasAttacked ) {
+                        this.hasAttacked = true;
+                        enemy.getAttackedFighter(objectivePos, this.damage);
+                        var change = { position: {x: objectivePos.x, y: objectivePos.y}, damage: (this.damage * (-1))};
+                        return change;
+                    }
+                }
             }
         }
         return {};
@@ -684,7 +820,17 @@ class Invocator extends Fighter {
     resetPoints() {
         this.movementPoints = 4;
         if ( this.latence > 0 ) this.latence--;
-        this.hasAttacked = this.latence <= 0 ? false : true;
+        // this.hasAttacked = this.latence <= 0 ? false : true;
+        this.hasAttacked = false;
+    }
+}
+
+class Timador extends Invocator {
+    constructor(fighter) {
+        super(fighter);
+        this.latence = 0;
+        this.cycle = 0;
+        this.invocations = ['bomb1', 'bomb2', 'bomb3'];
     }
 }
 
