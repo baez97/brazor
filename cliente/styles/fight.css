@@ -240,6 +240,7 @@ td .tooltiptext {
     background: url(../img/close-btn.png) center center no-repeat transparent;
     background-size: 95% auto;
     font-size: 30px;
+    cursor: not-allowed; 
 }
 
 .no-turn-button:before {
@@ -248,8 +249,7 @@ td .tooltiptext {
 
 .no-turn-button:hover {
     background: url(../img/close-btn-over.png) center center no-repeat transparent;
-    background-size: 100%;
-    font-size: 35px;
+    background-size: 95%;
     color: rgb(40, 40, 40);
     transition: all .1s;
     line-height: 27px;
