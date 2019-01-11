@@ -63,16 +63,26 @@ function paintFighters() {
         var position = change.position;
         var damage   = change.damage;
         var heal     = change.heal;
+        var pm       = change.pm;
 
-        if ($(`#C-${position.x}-${position.y}`).hasClass("feca")) {
-            damage = Math.floor(damage/2);
-            $(`#C-${position.x}-${position.y}`).append(`<div class='damage' style="color: orange">${damage}</div>`);
-        } else {
-            $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+        if ( position != undefined ) {
+            if ($(`#C-${position.x}-${position.y}`).hasClass("feca")) {
+                damage = Math.floor(damage/2);
+                $(`#C-${position.x}-${position.y}`).append(`<div class='damage' style="color: orange">${damage}</div>`);
+            } else {
+                $(`#C-${position.x}-${position.y}`).append(`<div class='damage'>${damage}</div>`);
+            }
         }
         
         if ( heal != undefined ) {
             $(`#C-${heal.position.x}-${heal.position.y}`).append(`<div class='heal'>+${heal.damage}</div>`);
+        }
+
+        if ( pm != undefined ) {
+            if ( pm.damagePM >= 0 )
+                $(`#C-${pm.position.x}-${pm.position.y}`).append(`<div class='pm'>+${pm.damagePM}PM</div>`);
+            else
+                $(`#C-${pm.position.x}-${pm.position.y}`).append(`<div class='pm'>${pm.damagePM}PM</div>`);
         }
         
         if ( change.end != undefined ) {
@@ -198,6 +208,7 @@ function clearAll() {
     $(".reached").removeClass("reached");
     $(".damage").fadeOut(1700);
     $(".heal").fadeOut(1700);
+    $(".pm").fadeOut(1700);
     paintFighters();
 }
 

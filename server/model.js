@@ -155,7 +155,6 @@ class Juego {
         var fightPlace = this.getFightPlace(fightPlaceID);
         var change = fightPlace.attackFighter(playerName, fighterName, objectivePos);
 
-        console.log(change);
         change.end = this.isTheEnd(fightPlaceID); 
 
         return change;
@@ -255,6 +254,8 @@ class FightPlace {
                 newFighters1.push(self.parlor["osamodas"](fighter));
             } else if (fighter.name == "timador") {
                 newFighters1.push(self.parlor["timador"](fighter));
+            } else if (fighter.name == "sadida") {
+                newFighters1.push(self.parlor["sadida"](fighter));
             } else {
                 newFighters1.push(new Fighter(fighter));
             }
@@ -279,6 +280,8 @@ class FightPlace {
                 newFighters2.push(self.parlor["osamodas"](fighter));
             } else if (fighter.name == "timador") {
                 newFighters2.push(self.parlor["timador"](fighter));
+            } else if (fighter.name == "sadida") {
+                newFighters2.push(self.parlor["sadida"](fighter));
             } else {
                 newFighters2.push(new Fighter(fighter));
             }          
@@ -384,10 +387,29 @@ class Player {
 
     getAttackedFighter(objectivePos, damage) {
         var fighter = this.getFighterAtPos(objectivePos);
-        console.log(fighter);
         if ( fighter != undefined ) {
             fighter.getAttacked(damage);
             return { position: objectivePos, damage: (damage*(-1)) };
+        } else {
+            return {};
+        }
+    }
+
+    addPMFighter(objectivePos, damagePM) {
+        var fighter = this.getFighterAtPos(objectivePos);
+        if ( fighter != undefined ) {
+            fighter.addPM(damagePM);
+            return { pm: { position: objectivePos, damagePM: damagePM } };
+        } else {
+            return {};
+        }
+    }
+
+    removePMFighter(objectivePos, damagePM) {
+        var fighter = this.getFighterAtPos(objectivePos);
+        if ( fighter != undefined ) {
+            fighter.removePM(damagePM);
+            return { pm: { position: objectivePos, damagePM: (damagePM*(-1)) } };
         } else {
             return {};
         }
@@ -491,6 +513,14 @@ class Fighter {
         }
     }
 
+    addPM(damagePM) {
+        this.movementPoints += damagePM;
+    }
+
+    removePM(damagePM) {
+        this.movementPoints -= damagePM;
+    }
+
     resetPoints() {
         this.movementPoints = 4;
         this.hasAttacked = false;
@@ -514,9 +544,9 @@ class Parlor {
     timador(fighter) {
         return new Timador(fighter);
     }
-    // sadida() {
-    //     return new Sadida();
-    // }
+    sadida(fighter) {
+        return new Sadida(fighter);
+    }
     osamodas(fighter) {
         return new Invocator(fighter);
     }
@@ -543,6 +573,15 @@ class Parlor {
     }
     bomb3(position) {
         return new Bomb3(position);
+    }
+    dolly1(position) {
+        return new Dolly1(position);
+    }
+    dolly2(position) {
+        return new Dolly2(position);
+    }
+    dolly3(position) {
+        return new Dolly3(position);
     }
 }
 
@@ -778,6 +817,99 @@ class Bomb3 extends Bomb {
     }
 }
 
+class Dolly extends Invocation {
+    attack(enemy, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    var change = enemy.removePMFighter(objectivePos, this.damagePM);
+                    if ( Object.keys(change).length ) {
+                        this.hasAttacked = true;
+                        return change;
+                    }
+                } 
+            }
+        }
+        return {};
+    }
+
+    attackOwn(player, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    var change = player.addPMFighter(objectivePos, this.damagePM);
+                    if ( Object.keys(change).length ) {
+                        this.hasAttacked = true;
+                        return change;
+                    }
+                } 
+            }
+        }
+        return {};
+    }
+}
+
+class Dolly1 extends Dolly {
+    constructor(position) {
+        var fighter = {
+            name : "dolly1",
+            life : 30,
+            damage : 10,
+            reach : 4,
+            x : position.x,
+            y : position.y,
+            movementPoints: 3
+        }
+        super(fighter);
+        this.damagePM = 1;
+    }
+}
+class Dolly2 extends Dolly {
+    constructor(position) {
+        var fighter = {
+            name : "dolly2",
+            life : 50,
+            damage : 10,
+            reach : 4,
+            x : position.x,
+            y : position.y,
+            movementPoints: 4
+        }
+        super(fighter);
+        this.damagePM = 2;
+    }
+}
+class Dolly3 extends Dolly {
+    constructor(position) {
+        var fighter = {
+            name : "dolly3",
+            life : 80,
+            damage : 50,
+            reach : 4,
+            x : position.x,
+            y : position.y,
+            movementPoints: 5
+        }
+        super(fighter);
+        this.damagePM = 3;
+    }
+
+    attack(enemy, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    var change = enemy.getAttackedFighter(objectivePos, this.damage);
+                    if ( Object.keys(change).length ) {
+                        this.hasAttacked = true;
+                    }
+                    return change;
+                } 
+            }
+        }
+        return {};
+    }
+}
+
 
 class Invocator extends Fighter {
     constructor(fighter) {
@@ -813,10 +945,6 @@ class Invocator extends Fighter {
         return {};
     }
 
-    attackOwn(player, objectivePos) {
-        return {};
-    }
-
     resetPoints() {
         this.movementPoints = 4;
         if ( this.latence > 0 ) this.latence--;
@@ -831,6 +959,31 @@ class Timador extends Invocator {
         this.latence = 0;
         this.cycle = 0;
         this.invocations = ['bomb1', 'bomb2', 'bomb3'];
+    }
+}
+
+class Sadida extends Invocator {
+    constructor(fighter) {
+        super(fighter);
+        this.latence = 0;
+        this.cycle = 0;
+        this.invocations = ['dolly1', 'dolly2', 'dolly3'];
+        this.damagePM = 2;
+    }
+
+    attackOwn(player, objectivePos) {
+        if ( Math.abs(objectivePos.x - this.x) < this.reach ) {
+            if ( Math.abs(objectivePos.y - this.y) < this.reach ) {
+                if ( ! this.hasAttacked ) {
+                    var change = player.addPMFighter(objectivePos, this.damagePM);
+                    if ( Object.keys(change).length ) {
+                        this.hasAttacked = true;
+                        return change;
+                    }
+                } 
+            }
+        }
+        return {};
     }
 }
 
