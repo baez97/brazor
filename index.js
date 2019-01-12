@@ -87,6 +87,13 @@ app.post("/addFriendByEmail", function(req, res) {
     });
 });
 
+app.post("/addFriendByName", function(req, res) {
+    var { user, name } = req.body;
+    juego.addFriendByName(user, name, function(data) {
+        res.send(data);
+    });
+});
+
 app.post("/getFriends", function(req, res) {
     juego.getFriends(req.body, function(data) {
         res.send(data);

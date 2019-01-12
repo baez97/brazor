@@ -10,7 +10,7 @@
 }
 
 #content {
-    height: 80vh;
+    min-height: 80vh;
     background: url(img/sub-back.png) center center no-repeat;
     background-size: cover;
     background-position: center;

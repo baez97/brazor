@@ -170,7 +170,16 @@ function addFriend() {
             }
         });
     } else if ( text.length > 0 ) {
-        //rest.addFriendByName(text); 
+        rest.addFriendByName(user, text, function(success) {
+            if ( success ) {
+                user.friends.push(text);
+                localStorage.setItem("user", JSON.stringify(user));
+                fillFriends();
+                hideAlert();
+            } else {
+                showError("<h1>No hay ningún jugador con ese nombre</h1>");
+            }
+        }); 
     } else {
         showError("<h1>Introduce el nombre</h1>");
     }

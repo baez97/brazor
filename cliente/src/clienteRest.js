@@ -97,6 +97,22 @@ function ClienteRest() {
         });
     }
 
+    this.addFriendByName = function (user, name, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/addFriendByName/',
+            data: JSON.stringify({ user: user, name: name }),
+            success: function(data) {
+                callback(true);
+            },
+            error: function(error) {
+                callback(false);
+            },
+            contentType: 'application/json',
+            dataType: 'json'
+        });
+    }
+
     this.getFriends = function (friends, callback) {
         $.ajax({
             type: 'POST',
