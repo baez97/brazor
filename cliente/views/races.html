@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Brazor</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="cliente/styles/login.css">
+    <link rel="stylesheet" href="cliente/styles/races.css">
+    <link rel="stylesheet" href="cliente/styles/pace.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <script src="cliente/src/clienteCom.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+</head>
+
+<body>
+    <script>
+        // PRELOADING HOVER IMAGES
+        var playHover = new Image();
+        playHover.src = url(img / btn - play1 - over.png)
+    </script>
+
+    <div style="display: block;">
+        <div class="content-menu menu-flex">
+            <div class="menu-left">
+                <a href="/">INICIO</a>
+                <a href="#">RAZAS</a>
+            </div>
+            <div class="menu-center">
+                <button class="play-button" onclick="location.href='/login'">JUGAR</button>
+            </div>
+            <div class="menu-right">
+                <a href="/signin">SIGNIN</a>
+                <a href="/login">LOGIN</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="cliente/img/classes/yopuka.jpg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title yopuka">
+                                Yopuka
+                            </h4>
+                            <p class="card-text">Espadachines poderosos con bastante fuerza y resistencia,
+                                ideales como tanque y para hacer grandes daños. Lo cierto es que los yopukas saben hacer 
+                                hablar a sus armas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="cliente/img/classes/ocra.jpg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title ocra">
+                                Ocra
+                            </h4>
+                            <p class="card-text">Los ocras son arqueros tan orgullosos como precisos.
+                                Aun a distancia, saben alcanzar con sus afilados proyectiles el orificio 
+                                más minúsculo que el enemigo deje sin vigilancia. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="cliente/img/classes/timador.jpg" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title timador">
+                                Timador
+                            </h4>
+                            <p class="card-text">Cuando se trata de 
+                                hacer explotar a sus enemigos no se hacen de rogar. Cuando atacan a una
+                                celda vacía invocan una bomba que, aunque no se pueda mover, incrementa sus
+                                daños cada turno.
+                            </del></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="cliente/img/classes/aniripsa.jpg" alt="">
+                            <div class=" card-body">
+                            <h4 class="card-title aniripsa">
+                                Aniripsa
+                            </h4>
+                            <p class="card-text">Los aniripsas son sanadores que curan con una simple 
+                                palabra. Aunque son capaces de hacer daño, su habilidad les permite curarse
+                                a ellos mismos cuando atacan y curar a los aliados.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <img class="card-img-top" src="cliente/img/classes/sadida.jpg" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title sadida">
+                            Sadida
+                        </h4>
+                        <p class="card-text">¡Los sadidas son invocadores que paran los pies de sus 
+                                enemigos! Aunque hacen daños a los enemigos, son capaces de otorgar
+                                PM (puntos de movimiento) a los aliados. Las muñecas que invocan quitan
+                                y dan PM a los enemigos y aliados respectivamente.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <img class="card-img-top" src="cliente/img/classes/osamodas.jpg" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title osamodas">
+                            Osamodas
+                        </h4>
+                        <p class="card-text">¡Los osamodas son domadores natos! Tienen el poder de 
+                                invocar criaturas y resultan ser excelentes adiestradores. 
+                                Cada criatura que invocan es diferente: empiezan por un Jalato, 
+                                después un Tofu y por último un Oso. ¡No subestimes al Tofu!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <img class="card-img-top" src="cliente/img/classes/sacrogito.jpg" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title sacrogito">
+                            Sacrogito
+                        </h4>
+                        <p class="card-text">¡Los sacrógritos son berserkers cuya fuerza aumenta cuando 
+                                reciben golpes! Puesto que no temen ni al dolor ni a las 
+                                heridas, suelen estar en primera línea, ¡preparados para el 
+                                combate! El sacrógrito es el compañero ideal para pasar tus 
+                                largas noches luchando...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <img class="card-img-top" src="cliente/img/classes/feca.jpg" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title feca">
+                            Feca
+                        </h4>
+                        <p class="card-text">Los fecas son leales protectores, siempre a la 
+                                defensiva. Son muy apreciados por los grupos de 
+                                aventureros gracias a sus armaduras elementales 
+                                y a su capacidad para encajar los golpes. Cuando son atacados
+                                reciben solo la mitad de daño.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

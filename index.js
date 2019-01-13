@@ -58,6 +58,12 @@ app.get('/fight', function(request, response) {
     response.setHeader("Content-type", "text/html");
     response.send(contenido);
 })
+
+app.get('/races', function(request, response) {
+    var contenido = fs.readFileSync("./cliente/views/races.html");
+    response.setHeader("Content-type", "text/html");
+    response.send(contenido);
+})
 // --------------------------------------------------------------------
 
 
